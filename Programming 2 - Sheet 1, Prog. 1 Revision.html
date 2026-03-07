@@ -1,0 +1,1208 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OOP with C++ — Practice Sheets</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-clike.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-cpp.min.js"></script>
+
+  <style>
+    :root{
+      --bg: #f6f7fb;
+      --panel: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #e2e8f0;
+      --shadow: 0 10px 30px rgba(2,6,23,.08);
+      --accent: #2563eb;
+      --accent2: #0ea5e9;
+      --chip: #eef2ff;
+      --chipText: #1e40af;
+      --success-bg: rgba(34,197,94,.12);
+      --success-border: rgba(34,197,94,.45);
+      --success-text: #15803d;
+      --theory-bg: rgba(37,99,235,.05);
+
+      --radius: 16px;
+      --radiusSm: 12px;
+      --maxw: 1100px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
+    }
+
+    [data-theme="dark"]{
+      --bg: #0b1220;
+      --panel: #0f1a2e;
+      --text: #e5e7eb;
+      --muted: #a5b4fc;
+      --border: rgba(148,163,184,.22);
+      --shadow: 0 12px 40px rgba(0,0,0,.35);
+      --accent: #60a5fa;
+      --accent2: #38bdf8;
+      --chip: rgba(96,165,250,.14);
+      --chipText: #bfdbfe;
+      --success-bg: rgba(34,197,94,.14);
+      --success-border: rgba(34,197,94,.38);
+      --success-text: #86efac;
+      --theory-bg: rgba(96,165,250,.08);
+    }
+
+    body{
+      margin: 0;
+      font-family: var(--sans);
+      background: radial-gradient(1200px 500px at 20% 0%, rgba(37,99,235,.10), transparent 60%),
+                  radial-gradient(1200px 500px at 80% 10%, rgba(14,165,233,.10), transparent 60%),
+                  var(--bg);
+      color: var(--text);
+    }
+
+    .wrap{
+      max-width: var(--maxw);
+      margin: 26px auto;
+      padding: 0 16px 40px;
+    }
+
+    header{
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .title{
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    h1{
+      margin: 0;
+      font-size: 26px;
+      letter-spacing: .2px;
+      font-weight: 800;
+    }
+
+    .subtitle{
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .panel{
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .toolbar{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 14px 14px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .leftTools{
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .pill{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.55);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 14px;
+      box-shadow: 0 8px 20px rgba(2,6,23,.06);
+      transition: .2s ease;
+    }
+
+    [data-theme="dark"] .pill{
+      background: rgba(15,26,46,.75);
+      box-shadow: 0 10px 22px rgba(0,0,0,.25);
+    }
+
+    .pill:hover{
+      border-color: rgba(37,99,235,.35);
+      transform: translateY(-1px);
+    }
+
+    .toggle{
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-size: 14px;
+      background: rgba(255,255,255,.55);
+      box-shadow: 0 8px 20px rgba(2,6,23,.06);
+    }
+
+    [data-theme="dark"] .toggle{
+      background: rgba(15,26,46,.75);
+      box-shadow: 0 10px 22px rgba(0,0,0,.25);
+    }
+
+    .switch{
+      width: 46px;
+      height: 26px;
+      border-radius: 999px;
+      background: rgba(148,163,184,.25);
+      position: relative;
+      cursor: pointer;
+      border: 1px solid var(--border);
+    }
+
+    .knob{
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      background: var(--panel);
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      transition: transform .2s ease;
+      box-shadow: 0 6px 16px rgba(0,0,0,.18);
+    }
+
+    .switch[data-on="true"]{
+      background: rgba(37,99,235,.35);
+    }
+
+    .switch[data-on="true"] .knob{
+      transform: translateX(20px);
+    }
+
+    .search{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px 12px;
+      min-width: 340px;
+      background: rgba(255,255,255,.55);
+      box-shadow: 0 8px 20px rgba(2,6,23,.06);
+    }
+
+    [data-theme="dark"] .search{
+      background: rgba(15,26,46,.75);
+      box-shadow: 0 10px 22px rgba(0,0,0,.25);
+    }
+
+    .search input{
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--text);
+      width: 100%;
+      font-size: 14px;
+    }
+
+    .tabs{
+      display: flex;
+      gap: 10px;
+      padding: 16px 14px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      background: rgba(2,6,23,.01);
+    }
+
+    [data-theme="dark"] .tabs{
+      background: rgba(255,255,255,.02);
+    }
+
+    .tab{
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.55);
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 8px 20px rgba(2,6,23,.06);
+      transition: .2s ease;
+    }
+
+    [data-theme="dark"] .tab{
+      background: rgba(15,26,46,.75);
+      box-shadow: 0 10px 22px rgba(0,0,0,.25);
+    }
+
+    .tab.active{
+      border-color: rgba(37,99,235,.55);
+      background: rgba(37,99,235,.10);
+    }
+
+    .badge{
+      font-size: 12px;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: var(--chip);
+      color: var(--chipText);
+      border: 1px solid rgba(37,99,235,.18);
+    }
+
+    .content{
+      padding: 16px;
+    }
+
+    .q{
+      border: 1px solid var(--border);
+      border-radius: var(--radiusSm);
+      background: rgba(255,255,255,.55);
+      padding: 14px 14px;
+      margin-bottom: 12px;
+      box-shadow: 0 10px 26px rgba(2,6,23,.06);
+    }
+
+    [data-theme="dark"] .q{
+      background: rgba(15,26,46,.72);
+      box-shadow: 0 12px 28px rgba(0,0,0,.28);
+    }
+
+    .qHead{
+      display:flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: baseline;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .qTitle{
+      margin: 0;
+      font-weight: 750;
+      font-size: 16px;
+      letter-spacing: .1px;
+      white-space: pre-line;
+      line-height: 1.65;
+    }
+
+    .qMeta{
+      font-size: 13px;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+
+    .qBody{
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .options{
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: var(--text);
+    }
+
+    .options li{
+      margin: 6px 0;
+      padding: 6px 8px;
+      border-radius: 10px;
+    }
+
+    .options li.correct{
+      border: 1px solid rgba(34,197,94,.45);
+      background: rgba(34,197,94,.12);
+    }
+
+    .answer{
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px dashed rgba(37,99,235,.35);
+      background: rgba(37,99,235,.06);
+      display: none;
+      white-space: pre-line;
+      line-height: 1.65;
+    }
+
+    .answer .label,
+    .output-answer .label{
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .output-answer{
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px dashed rgba(37,99,235,.35);
+      background: rgba(37,99,235,.06);
+      display: none;
+      font-family: var(--mono);
+      white-space: pre-line;
+      line-height: 1.7;
+    }
+
+    .tf-badge{
+      display: none;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 10px;
+      border: 1px solid;
+    }
+
+    .tf-true{
+      background: rgba(34,197,94,.12);
+      border-color: rgba(34,197,94,.45);
+      color: #15803d;
+    }
+
+    .tf-false{
+      background: rgba(239,68,68,.12);
+      border-color: rgba(239,68,68,.45);
+      color: #b91c1c;
+    }
+
+    .q.write-question .qTitle{
+      font-size: 17px;
+      line-height: 1.75;
+    }
+
+    .q.write-question{
+      padding-top: 16px;
+      padding-bottom: 16px;
+    }
+
+    .q.theory-question{
+      background: var(--theory-bg);
+    }
+
+    .q.theory-question .qTitle{
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    .theory-topic{
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--chipText);
+      background: var(--chip);
+      border: 1px solid rgba(37,99,235,.18);
+      margin-bottom: 8px;
+    }
+
+    .code-question-wrap{
+      display: block;
+      margin-top: 14px;
+    }
+
+    .code-answer-wrap{
+      display: none;
+      margin-top: 14px;
+    }
+
+    .code-toolbar{
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .copy-btn{
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.7);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 13px;
+      font-family: var(--sans);
+      transition: .2s ease;
+    }
+
+    [data-theme="dark"] .copy-btn{
+      background: rgba(15,26,46,.85);
+    }
+
+    .copy-btn:hover{
+      border-color: rgba(37,99,235,.35);
+      transform: translateY(-1px);
+    }
+
+    .copy-btn.copied{
+      background: var(--success-bg);
+      border-color: var(--success-border);
+      color: var(--success-text);
+    }
+
+    pre[class*="language-"]{
+      border-radius: 18px;
+      border: 1px solid rgba(148,163,184,.18);
+      overflow: auto;
+      font-family: var(--mono);
+      font-size: 14px;
+      line-height: 1.75;
+      margin: 10px 0 0;
+      padding: 18px 20px;
+      background: linear-gradient(180deg, #0f172a 0%, #111827 100%) !important;
+      box-shadow: 0 16px 34px rgba(2,6,23,.22);
+    }
+
+    .code-answer-wrap pre[class*="language-"],
+    .code-question-wrap pre[class*="language-"]{
+      margin-top: 0;
+    }
+
+    code[class*="language-"]{
+      font-family: var(--mono);
+      text-shadow: none !important;
+    }
+
+    .token.comment,
+    .token.prolog,
+    .token.doctype,
+    .token.cdata{
+      color: #6b7280;
+      font-style: italic;
+    }
+
+    .token.keyword{
+      color: #f472b6;
+    }
+
+    .token.function{
+      color: #60a5fa;
+    }
+
+    .token.string{
+      color: #fde047;
+    }
+
+    .token.number{
+      color: #c4b5fd;
+    }
+
+    .token.operator,
+    .token.punctuation{
+      color: #e5e7eb;
+    }
+
+    .token.boolean,
+    .token.constant{
+      color: #fb7185;
+    }
+
+    .token.class-name{
+      color: #67e8f9;
+    }
+
+    .token.builtin,
+    .token.type-name{
+      color: #5eead4;
+    }
+
+    .token.variable{
+      color: #f8fafc;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="title">
+        <h1>OOP with C++ — Practice Sheets</h1>
+        <p class="subtitle">Tabs by question type • Toggle answers • C++ highlighting • Light/Dark mode</p>
+      </div>
+
+      <button class="pill" id="btnPrint" title="Print or Save as PDF">🖨️ Print / PDF</button>
+    </header>
+
+    <div class="panel">
+      <div class="toolbar">
+        <div class="leftTools">
+          <div class="toggle" title="Show or hide answers">
+            <span>Answers</span>
+            <div class="switch" id="answersSwitch" data-on="false" role="switch" aria-checked="false">
+              <div class="knob"></div>
+            </div>
+          </div>
+
+          <div class="toggle" title="Light or dark theme">
+            <span>Dark</span>
+            <div class="switch" id="themeSwitch" data-on="false" role="switch" aria-checked="false">
+              <div class="knob"></div>
+            </div>
+          </div>
+
+          <div class="search" title="Search inside current tab">
+            🔎 <input id="searchInput" placeholder="Search in this tab..." />
+          </div>
+        </div>
+      </div>
+
+      <div class="tabs" id="tabs"></div>
+      <div class="content" id="content"></div>
+    </div>
+  </div>
+
+  <script>
+    const data = {
+      meta: {
+        course: "OOP with C++",
+        sheetTitle: "Sheet 1"
+      },
+      sections: [
+        {
+          id: "mcq",
+          title: "MCQ",
+          items: [
+            { q: "Which of the following is a compiled language?", options: ["Python", "JavaScript", "C++", "HTML"], correctIndex: 2 },
+            { q: "A programming paradigm supported by C++ is:", options: ["Object-oriented programming", "Functional programming", "Procedural programming", "All of the above"], correctIndex: 3 },
+            { q: "Which data type stores true/false values?", options: ["bool", "int", "char", "string"], correctIndex: 0 },
+            { q: "The expression x++ means:", options: ["Use x, then increase", "Increase x, then use", "Double x", "Subtract 1"], correctIndex: 0 },
+            { q: "Which applications is C++ used for?", options: ["Operating systems", "Web browsers", "High-performance applications", "All of the above"], correctIndex: 3 },
+            { q: "A runtime error is detected:", options: ["During compilation", "While the program is running", "After closing the program", "During linking"], correctIndex: 1 },
+            { q: "A logic error results in:", options: ["Incorrect output", "Compiler crash", "Syntax failure", "No execution"], correctIndex: 0 },
+            { q: "Which is a valid if-statement?", options: ["if x > 5", "if (x > 5)", "if (x > 5);", "if (x > 5]"], correctIndex: 1 },
+            { q: "In a switch statement, the break keyword:", options: ["Skips the default case", "Prevents fall-through", "Ends the program", "Restarts the switch"], correctIndex: 1 },
+            { q: "A syntax error occurs when:", options: ["Wrong logic is used", "Language rules are broken", "Program crashes during execution", "Output is unexpected"], correctIndex: 1 },
+            { q: "Which loop always executes at least once?", options: ["for", "while", "do-while", "foreach"], correctIndex: 2 },
+            { q: "For a known number of iterations, the best loop is:", options: ["while", "for", "do-while", "infinite loop"], correctIndex: 1 },
+            { q: "A function that does not return a value uses:", options: ["null", "void", "empty", "zero"], correctIndex: 1 },
+            { q: "The variables inside parentheses of a function definition are called:", options: ["Arguments", "Parameters", "Instances", "Locals"], correctIndex: 1 },
+            { q: "Recursion means:", options: ["A loop inside a function", "A function calling itself", "A function calling another function", "A function returning multiple values"], correctIndex: 1 },
+            { q: "Which statement ends a loop immediately?", options: ["skip", "return", "break", "stop"], correctIndex: 2 },
+            { q: "The value passed into a function when calling it is called:", options: ["Return value", "Argument", "Parameter", "Output"], correctIndex: 1 },
+            { q: "Which expression accesses the first element of an array arr?", options: ["arr(0)", "arr[0]", "arr{0}", "arr<0>"], correctIndex: 1 },
+            { q: "Which loop structure is commonly used to traverse all elements of a one-dimensional array?", options: ["if statement", "switch statement", "for loop", "goto statement"], correctIndex: 2 },
+            { q: "Which declaration correctly creates a 3×3 integer two-dimensional array?", options: ["int a(3,3);", "int a[3,3];", "int a[3][3];", "array<int,3,3> a;"], correctIndex: 2 }
+          ]
+        },
+        {
+          id: "tf",
+          title: "True / False",
+          items: [
+            { q: "The statement int x; allocates memory for a variable but does not assign it a value.", answer: "True" },
+            { q: "C++ is case-sensitive, so Sum and sum are treated as the same variable.", answer: "False" },
+            { q: "A missing semicolon results in a runtime error.", answer: "False" },
+            { q: "Logical errors can exist even if the program compiles successfully.", answer: "True" },
+            { q: "The else block can exist without an if block.", answer: "False" },
+            { q: "A while loop may execute zero times depending on its condition.", answer: "True" },
+            { q: "A for loop must always include initialization, condition, and increment parts.", answer: "False" },
+            { q: "An infinite loop occurs when the loop condition never becomes false.", answer: "True" },
+            { q: "The break statement exits the loop immediately.", answer: "True" },
+            { q: "The continue statement stops the loop completely.", answer: "False" },
+            { q: "A function must always return a value.", answer: "False" },
+            { q: "Calling a function before declaring it leads to an error.", answer: "True" },
+            { q: "A function can call itself in C++.", answer: "True" },
+            { q: "A function must always have parameters.", answer: "False" },
+            { q: "A void function does not return a value.", answer: "True" },
+            { q: "Array indexing in C++ starts from 0.", answer: "True" },
+            { q: "An array can store elements of different data types in the same declaration.", answer: "False" },
+            { q: "A two-dimensional array can be accessed using two indices such as a[i][j].", answer: "True" }
+          ]
+        },
+        {
+          id: "output",
+          title: "What is the Output?",
+          items: [
+            {
+              q: "What is the output of the following code segment?",
+              code: `int i = 5, n = 12;
+while (i <= n)
+    i++;
+cout << i << endl;`,
+              answer: "13"
+            },
+            {
+              q: "What is the output of the following code segment?",
+              code: `int i = -1;
+do
+    cout << i * i * i << endl;
+while (++i >= 0);`,
+              answer: `-1`
+            },
+            {
+              q: "What is the output of the following code segment?",
+              code: `int x = 0;
+if (x >= 0) x += 2;
+if (x >= 2) x += 5;
+cout << x;`,
+              answer: "7"
+            },
+            {
+              q: "What is the output of the following code segment?",
+              code: `int i, j, c = 0;
+for (i = 0; i < 10; i++)
+    for (j = i; j < 10; j++)
+        c++;
+cout << c;`,
+              answer: "55"
+            },
+            {
+              q: "What is the output of the following code segment?",
+              code: `int n = 10;
+for (int i = 5; i <= n; i *= 2)
+    cout << i << endl;`,
+              answer: `5
+10`
+            },
+            {
+              q: "What is the output of the following code segment?",
+              code: `char ch;
+int x = 5;
+switch (x % 4)
+{
+    case 1: ch = 'A'; break;
+    case 2: ch = 'B'; break;
+    case 3: ch = 'C'; break;
+    default: ch = 'D';
+}
+cout << ch;`,
+              answer: "A"
+            },
+            {
+              q: "What is the output of the following code segment?",
+              code: `int i = 5, n = -10;
+while (i >= n)
+    i--;
+cout << i << endl;`,
+              answer: "-11"
+            }
+          ]
+        },
+        {
+          id: "write",
+          title: "Write Code",
+          items: [
+            {
+              q: `Write a C++ program that reads a student's mark (0–100) and prints the corresponding grade category:
+
+• Excellent → mark ≥ 90
+• Very Good → mark ≥ 75
+• Good → mark ≥ 60
+• Fail → mark < 60
+
+If the mark is outside the range 0–100, print "Invalid mark".`,
+              category: "Conditions",
+              code: `#include <iostream>
+using namespace std;
+
+int main() {
+    int mark;
+
+    cout << "Enter mark (0-100): ";
+    cin >> mark;
+
+    if (mark < 0 || mark > 100)
+        cout << "Invalid mark";
+    else if (mark >= 90)
+        cout << "Excellent";
+    else if (mark >= 75)
+        cout << "Very Good";
+    else if (mark >= 60)
+        cout << "Good";
+    else
+        cout << "Fail";
+
+    return 0;
+}`
+            },
+            {
+              q: "Write a program that reads an integer N and calculates N! (the factorial of N).",
+              category: "Loops",
+              code: `#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    long long fact = 1;
+
+    cout << "Enter a number: ";
+    cin >> n;
+
+    for (int i = 1; i <= n; i++) {
+        fact *= i;
+    }
+
+    cout << "Factorial = " << fact;
+
+    return 0;
+}`
+            },
+            {
+              q: "Create a function square() that returns the square of a number.",
+              category: "Functions",
+              code: `#include <iostream>
+using namespace std;
+
+int square(int n) {
+    return n * n;
+}
+
+int main() {
+    cout << square(6);   // 36
+    return 0;
+}`
+            },
+            {
+              q: "Write a function factorial(n) that returns n!.",
+              category: "Functions",
+              code: `#include <iostream>
+using namespace std;
+
+int factorial(int n) {
+    int fact = 1;
+
+    for (int i = 1; i <= n; i++)
+        fact *= i;
+
+    return fact;
+}
+
+int main() {
+    cout << factorial(5);   // 120
+    return 0;
+}`
+            },
+            {
+              q: "Given an array of numbers, find the sum and average.",
+              category: "Arrays",
+              code: `#include <iostream>
+using namespace std;
+
+int main() {
+    double numbers[] = {7, 5, 6, 12, 35, 27};
+
+    double sum = 0;
+    int count = 0;
+
+    for (double n : numbers) {
+        sum += n;
+        count++;
+    }
+
+    double average = sum / count;
+
+    cout << "Sum = " << sum << endl;
+    cout << "Average = " << average << endl;
+
+    return 0;
+}`
+            },
+            {
+              q: `Write a program that:
+1. Reads a 3×3 matrix from the user
+2. Prints the matrix in table format`,
+              category: "2D Arrays",
+              code: `#include <iostream>
+using namespace std;
+
+int main() {
+    int A[3][3];
+
+    cout << "Enter 9 numbers for the matrix:\\n";
+
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            cin >> A[i][j];
+        }
+    }
+
+    cout << "\\nMatrix:\\n";
+
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            cout << A[i][j] << " ";
+        }
+        cout << endl;
+    }
+
+    return 0;
+}`
+            }
+          ]
+        },
+        {
+          id: "debug",
+          title: "Debug / Find the Error",
+          items: [
+            {
+              q: "Find and correct the error(s) in the following code:",
+              code: `#include <iostream>
+using namespace std;
+
+int main() {
+    int x = 5
+    if (x > 0)
+        cout << "Positive";
+    return 0;
+}`,
+              answer: `The semicolon is missing after:
+int x = 5;
+
+Correct line:
+int x = 5;`
+            },
+            {
+              q: "Find and correct the error(s) in the following code:",
+              code: `#include <iostream>
+using namespace std;
+
+int main() {
+    int i;
+    for (i = 1; i <= 5; i--)
+        cout << i << endl;
+    return 0;
+}`,
+              answer: `The loop update is wrong.
+i-- makes the loop move away from 5 and can cause an infinite loop.
+
+Correct line:
+for (i = 1; i <= 5; i++)`
+            },
+            {
+              q: "Find and correct the error(s) in the following code:",
+              code: `#include <iostream>
+using namespace std;
+
+int square(int n) {
+    cout << n * n;
+}
+
+int main() {
+    int x = square(4);
+    cout << x;
+    return 0;
+}`,
+              answer: `The function square is used as if it returns a value, but it does not return anything.
+
+Correct version:
+int square(int n) {
+    return n * n;
+}`
+            },
+            {
+              q: "Find and correct the error(s) in the following code:",
+              code: `#include <iostream>
+using namespace std;
+
+int main() {
+    int a[5] = {1, 2, 3, 4, 5};
+    cout << a[5];
+    return 0;
+}`,
+              answer: `Array indices start from 0, so valid indices are 0 to 4.
+a[5] is out of bounds.
+
+Correct example:
+cout << a[4];`
+            }
+          ]
+        },
+        {
+          id: "theory",
+          title: "Theory",
+          items: [
+            {
+              q: "Explain the difference in behavior between these two forms:\nif (x > 0) ...\nif (x > 5) ...\nand\nif (x > 0) ...\nelse if (x > 5) ...",
+              answer: "With two separate if statements, both conditions can execute if both are true. With if ... else if, only the first true condition runs.",
+              category: "Conditions"
+            },
+            {
+              q: "A loop kept running forever although the syntax was correct. What is the most likely logical reason behind that?",
+              answer: "The loop condition never became false, usually because the control variable was not updated correctly.",
+              category: "Loops"
+            },
+            {
+              q: "A programmer moved a repeated calculation into a function. Besides shortening the code, what practical benefit does that give?",
+              answer: "It improves reusability and makes the program easier to test, read, and maintain.",
+              category: "Functions"
+            },
+            {
+              q: "When reading a function header, how can you tell what values the function expects and what value it gives back?",
+              answer: "The parameters show the expected inputs, and the return type shows the value returned by the function.",
+              category: "Functions"
+            },
+            {
+              q: "Explain what the syntax arr[i] means, and why it is useful when working with loops.",
+              answer: "arr[i] means accessing the element at index i in the array. It is useful with loops because it lets the program process all elements one by one.",
+              category: "Arrays"
+            },
+            {
+              q: "A student wants to process exam marks one by one using a loop. Why is array indexing important in this case?",
+              answer: "Indexing allows access to each element in order, which makes traversal and updates possible.",
+              category: "Arrays"
+            },
+            {
+              q: "When does using a two-dimensional array make more sense than using a one-dimensional array?",
+              answer: "When the data is naturally organized in rows and columns, such as tables, matrices, or seating layouts.",
+              category: "2D Arrays"
+            }
+          ]
+        }
+      ]
+    };
+
+    const els = {
+      tabs: document.getElementById("tabs"),
+      content: document.getElementById("content"),
+      answersSwitch: document.getElementById("answersSwitch"),
+      themeSwitch: document.getElementById("themeSwitch"),
+      searchInput: document.getElementById("searchInput"),
+      btnPrint: document.getElementById("btnPrint")
+    };
+
+    let state = {
+      activeSectionId: data.sections[0]?.id ?? null,
+      showAnswers: false,
+      theme: "light",
+      search: ""
+    };
+
+    function setSwitch(el, on){
+      el.dataset.on = String(on);
+      el.setAttribute("aria-checked", on ? "true" : "false");
+    }
+
+    function applyTheme(theme){
+      document.documentElement.setAttribute("data-theme", theme);
+      state.theme = theme;
+      localStorage.setItem("sheet_theme", theme);
+      setSwitch(els.themeSwitch, theme === "dark");
+      if (window.Prism) Prism.highlightAll();
+    }
+
+    function applyAnswers(on){
+      state.showAnswers = on;
+      localStorage.setItem("sheet_answers", on ? "1" : "0");
+      setSwitch(els.answersSwitch, on);
+
+      document.querySelectorAll(".answer").forEach(a => {
+        a.style.display = on ? "block" : "none";
+      });
+
+      document.querySelectorAll(".output-answer").forEach(a => {
+        a.style.display = on ? "block" : "none";
+      });
+
+      document.querySelectorAll(".tf-badge").forEach(b => {
+        b.style.display = on ? "inline-block" : "none";
+      });
+
+      document.querySelectorAll(".code-answer-wrap").forEach(w => {
+        w.style.display = on ? "block" : "none";
+      });
+
+      document.querySelectorAll(".options .opt").forEach(li => {
+        if (on && li.classList.contains("is-correct")) li.classList.add("correct");
+        else li.classList.remove("correct");
+      });
+    }
+
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;");
+    }
+
+    function getActiveSection(){
+      return data.sections.find(s => s.id === state.activeSectionId) ?? data.sections[0];
+    }
+
+    function renderTabs(){
+      els.tabs.innerHTML = "";
+      data.sections.forEach(sec => {
+        const btn = document.createElement("button");
+        btn.className = "tab" + (sec.id === state.activeSectionId ? " active" : "");
+        const count = sec.items?.length ?? 0;
+        btn.innerHTML = `${sec.title} <span class="badge">${count}</span>`;
+        btn.addEventListener("click", () => {
+          state.activeSectionId = sec.id;
+          state.search = "";
+          els.searchInput.value = "";
+          renderTabs();
+          renderContent();
+        });
+        els.tabs.appendChild(btn);
+      });
+    }
+
+    function renderContent(){
+      const sec = getActiveSection();
+      const qItems = sec.items ?? [];
+
+      const filtered = qItems.filter(item => {
+        if (!state.search.trim()) return true;
+        const hay = JSON.stringify(item).toLowerCase();
+        return hay.includes(state.search.trim().toLowerCase());
+      });
+
+      els.content.innerHTML = filtered.map((item, idx) => {
+        const num = idx + 1;
+        const hasOptions = Array.isArray(item.options) && item.options.length;
+        const hasCode = !!item.code;
+
+        const hasTextAnswer =
+          (typeof item.answer === "string" && item.answer.trim() !== "") ||
+          (typeof item.explain === "string" && item.explain.trim() !== "");
+
+        const hasTfAnswer =
+          sec.id === "tf" &&
+          typeof item.answer === "string" &&
+          item.answer.trim() !== "";
+
+        const categoryLabel =
+          item.category
+            ? `${escapeHtml(sec.title)} • ${escapeHtml(item.category)}`
+            : escapeHtml(sec.title);
+
+        let questionClass = "q";
+        if (sec.id === "write") questionClass += " write-question";
+        if (sec.id === "theory") questionClass += " theory-question";
+
+        return `
+          <div class="${questionClass}">
+            <div class="qHead">
+              <div>
+                ${sec.id === "theory" && item.category ? `<div class="theory-topic">${escapeHtml(item.category)}</div>` : ""}
+                <p class="qTitle">${num}) ${escapeHtml(item.q)}</p>
+              </div>
+              <span class="qMeta">${categoryLabel}</span>
+            </div>
+
+            <div class="qBody">
+              ${hasOptions ? `
+                <ol class="options" type="A">
+                  ${item.options.map((opt, i) => {
+                    const isCorrect = typeof item.correctIndex === "number" && i === item.correctIndex;
+                    return `<li class="opt ${isCorrect ? "is-correct" : ""}">${escapeHtml(opt)}</li>`;
+                  }).join("")}
+                </ol>
+              ` : ""}
+
+              ${hasTfAnswer ? `
+                <div class="tf-badge ${item.answer === "True" ? "tf-true" : "tf-false"}">${escapeHtml(item.answer)}</div>
+              ` : ""}
+
+              ${sec.id === "output" && hasTextAnswer ? `
+                <div class="output-answer">
+                  <div class="label"><b>Answer</b></div>
+                  ${item.answer ? `<div>${escapeHtml(item.answer)}</div>` : ""}
+                </div>
+              ` : ""}
+
+              ${(sec.id !== "tf" && sec.id !== "write" && sec.id !== "output" && hasTextAnswer) ? `
+                <div class="answer">
+                  <div class="label"><b>Answer</b></div>
+                  ${item.answer ? `<div>${escapeHtml(item.answer)}</div>` : ""}
+                  ${item.explain ? `<div style="margin-top:8px;color:var(--muted);font-size:13px;"><b>Explanation:</b> ${escapeHtml(item.explain)}</div>` : ""}
+                </div>
+              ` : ""}
+
+              ${hasCode ? `
+                <div class="${sec.id === "write" ? "code-answer-wrap" : "code-question-wrap"}">
+                  <div class="code-toolbar">
+                    <button class="copy-btn" type="button" data-code="${encodeURIComponent(item.code)}">📋 Copy Code</button>
+                  </div>
+                  <pre class="language-cpp"><code class="language-cpp">${escapeHtml(item.code)}</code></pre>
+                </div>
+              ` : ""}
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      bindCopyButtons();
+      applyAnswers(state.showAnswers);
+      if (window.Prism) Prism.highlightAll();
+    }
+
+    function bindCopyButtons(){
+      document.querySelectorAll(".copy-btn").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          const code = decodeURIComponent(btn.dataset.code || "");
+          try {
+            await navigator.clipboard.writeText(code);
+            const oldText = btn.innerHTML;
+            btn.innerHTML = "✅ Copied";
+            btn.classList.add("copied");
+            setTimeout(() => {
+              btn.innerHTML = oldText;
+              btn.classList.remove("copied");
+            }, 1400);
+          } catch (err) {
+            const textarea = document.createElement("textarea");
+            textarea.value = code;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textarea);
+
+            const oldText = btn.innerHTML;
+            btn.innerHTML = "✅ Copied";
+            btn.classList.add("copied");
+            setTimeout(() => {
+              btn.innerHTML = oldText;
+              btn.classList.remove("copied");
+            }, 1400);
+          }
+        });
+      });
+    }
+
+    els.searchInput.addEventListener("input", (e) => {
+      state.search = e.target.value;
+      renderContent();
+    });
+
+    els.btnPrint.addEventListener("click", () => window.print());
+    els.answersSwitch.addEventListener("click", () => applyAnswers(!state.showAnswers));
+    els.themeSwitch.addEventListener("click", () => applyTheme(state.theme === "dark" ? "light" : "dark"));
+
+    (function init(){
+      renderTabs();
+      renderContent();
+
+      const savedTheme = localStorage.getItem("sheet_theme");
+      if (savedTheme === "dark" || savedTheme === "light") {
+        applyTheme(savedTheme);
+      } else {
+        const systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        applyTheme(systemDark ? "dark" : "light");
+      }
+
+      const savedAnswers = localStorage.getItem("sheet_answers");
+      applyAnswers(savedAnswers === "1");
+    })();
+  </script>
+</body>
+</html>

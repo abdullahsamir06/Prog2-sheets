@@ -1,0 +1,1186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OOP with C++ — Practice Sheets</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-clike.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-cpp.min.js"></script>
+
+  <style>
+    :root{
+      --bg: #f6f7fb;
+      --panel: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #e2e8f0;
+      --shadow: 0 10px 30px rgba(2,6,23,.08);
+      --accent: #2563eb;
+      --accent2: #0ea5e9;
+      --chip: #eef2ff;
+      --chipText: #1e40af;
+      --success-bg: rgba(34,197,94,.12);
+      --success-border: rgba(34,197,94,.45);
+      --success-text: #15803d;
+      --theory-bg: rgba(37,99,235,.05);
+
+      --radius: 16px;
+      --radiusSm: 12px;
+      --maxw: 1100px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
+    }
+
+    [data-theme="dark"]{
+      --bg: #0b1220;
+      --panel: #0f1a2e;
+      --text: #e5e7eb;
+      --muted: #a5b4fc;
+      --border: rgba(148,163,184,.22);
+      --shadow: 0 12px 40px rgba(0,0,0,.35);
+      --accent: #60a5fa;
+      --accent2: #38bdf8;
+      --chip: rgba(96,165,250,.14);
+      --chipText: #bfdbfe;
+      --success-bg: rgba(34,197,94,.14);
+      --success-border: rgba(34,197,94,.38);
+      --success-text: #86efac;
+      --theory-bg: rgba(96,165,250,.08);
+    }
+
+    body{
+      margin: 0;
+      font-family: var(--sans);
+      background: radial-gradient(1200px 500px at 20% 0%, rgba(37,99,235,.10), transparent 60%),
+                  radial-gradient(1200px 500px at 80% 10%, rgba(14,165,233,.10), transparent 60%),
+                  var(--bg);
+      color: var(--text);
+    }
+
+    .wrap{
+      max-width: var(--maxw);
+      margin: 26px auto;
+      padding: 0 16px 40px;
+    }
+
+    header{
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .title{
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    h1{
+      margin: 0;
+      font-size: 26px;
+      letter-spacing: .2px;
+      font-weight: 800;
+    }
+
+    .subtitle{
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .panel{
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .toolbar{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 14px 14px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .leftTools{
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .pill{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.55);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 14px;
+      box-shadow: 0 8px 20px rgba(2,6,23,.06);
+      transition: .2s ease;
+    }
+
+    [data-theme="dark"] .pill{
+      background: rgba(15,26,46,.75);
+      box-shadow: 0 10px 22px rgba(0,0,0,.25);
+    }
+
+    .pill:hover{
+      border-color: rgba(37,99,235,.35);
+      transform: translateY(-1px);
+    }
+
+    .toggle{
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-size: 14px;
+      background: rgba(255,255,255,.55);
+      box-shadow: 0 8px 20px rgba(2,6,23,.06);
+    }
+
+    [data-theme="dark"] .toggle{
+      background: rgba(15,26,46,.75);
+      box-shadow: 0 10px 22px rgba(0,0,0,.25);
+    }
+
+    .switch{
+      width: 46px;
+      height: 26px;
+      border-radius: 999px;
+      background: rgba(148,163,184,.25);
+      position: relative;
+      cursor: pointer;
+      border: 1px solid var(--border);
+    }
+
+    .knob{
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      background: var(--panel);
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      transition: transform .2s ease;
+      box-shadow: 0 6px 16px rgba(0,0,0,.18);
+    }
+
+    .switch[data-on="true"]{
+      background: rgba(37,99,235,.35);
+    }
+
+    .switch[data-on="true"] .knob{
+      transform: translateX(20px);
+    }
+
+    .search{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px 12px;
+      min-width: 340px;
+      background: rgba(255,255,255,.55);
+      box-shadow: 0 8px 20px rgba(2,6,23,.06);
+    }
+
+    [data-theme="dark"] .search{
+      background: rgba(15,26,46,.75);
+      box-shadow: 0 10px 22px rgba(0,0,0,.25);
+    }
+
+    .search input{
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--text);
+      width: 100%;
+      font-size: 14px;
+    }
+
+    .tabs{
+      display: flex;
+      gap: 10px;
+      padding: 16px 14px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      background: rgba(2,6,23,.01);
+    }
+
+    [data-theme="dark"] .tabs{
+      background: rgba(255,255,255,.02);
+    }
+
+    .tab{
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.55);
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 8px 20px rgba(2,6,23,.06);
+      transition: .2s ease;
+    }
+
+    [data-theme="dark"] .tab{
+      background: rgba(15,26,46,.75);
+      box-shadow: 0 10px 22px rgba(0,0,0,.25);
+    }
+
+    .tab.active{
+      border-color: rgba(37,99,235,.55);
+      background: rgba(37,99,235,.10);
+    }
+
+    .badge{
+      font-size: 12px;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: var(--chip);
+      color: var(--chipText);
+      border: 1px solid rgba(37,99,235,.18);
+    }
+
+    .content{
+      padding: 16px;
+    }
+
+    .q{
+      border: 1px solid var(--border);
+      border-radius: var(--radiusSm);
+      background: rgba(255,255,255,.55);
+      padding: 14px 14px;
+      margin-bottom: 12px;
+      box-shadow: 0 10px 26px rgba(2,6,23,.06);
+    }
+
+    [data-theme="dark"] .q{
+      background: rgba(15,26,46,.72);
+      box-shadow: 0 12px 28px rgba(0,0,0,.28);
+    }
+
+    .qHead{
+      display:flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: baseline;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .qTitle{
+      margin: 0;
+      font-weight: 750;
+      font-size: 16px;
+      letter-spacing: .1px;
+      white-space: pre-line;
+      line-height: 1.65;
+    }
+
+    .qMeta{
+      font-size: 13px;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+
+    .qBody{
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .options{
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: var(--text);
+    }
+
+    .options li{
+      margin: 6px 0;
+      padding: 6px 8px;
+      border-radius: 10px;
+    }
+
+    .options li.correct{
+      border: 1px solid rgba(34,197,94,.45);
+      background: rgba(34,197,94,.12);
+    }
+
+    .answer{
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px dashed rgba(37,99,235,.35);
+      background: rgba(37,99,235,.06);
+      display: none;
+      white-space: pre-line;
+      line-height: 1.65;
+    }
+
+    .answer .label,
+    .output-answer .label{
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .output-answer{
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px dashed rgba(37,99,235,.35);
+      background: rgba(37,99,235,.06);
+      display: none;
+      font-family: var(--mono);
+      white-space: pre-line;
+      line-height: 1.7;
+    }
+
+    .tf-badge{
+      display: none;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 10px;
+      border: 1px solid;
+    }
+
+    .tf-true{
+      background: rgba(34,197,94,.12);
+      border-color: rgba(34,197,94,.45);
+      color: #15803d;
+    }
+
+    .tf-false{
+      background: rgba(239,68,68,.12);
+      border-color: rgba(239,68,68,.45);
+      color: #b91c1c;
+    }
+
+    .q.write-question .qTitle{
+      font-size: 17px;
+      line-height: 1.75;
+    }
+
+    .q.write-question{
+      padding-top: 16px;
+      padding-bottom: 16px;
+    }
+
+    .q.theory-question{
+      background: var(--theory-bg);
+    }
+
+    .q.theory-question .qTitle{
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    .theory-topic{
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--chipText);
+      background: var(--chip);
+      border: 1px solid rgba(37,99,235,.18);
+      margin-bottom: 8px;
+    }
+
+    .code-question-wrap{
+      display: block;
+      margin-top: 14px;
+    }
+
+    .code-answer-wrap{
+      display: none;
+      margin-top: 14px;
+    }
+
+    .code-toolbar{
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .copy-btn{
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.7);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 13px;
+      font-family: var(--sans);
+      transition: .2s ease;
+    }
+
+    [data-theme="dark"] .copy-btn{
+      background: rgba(15,26,46,.85);
+    }
+
+    .copy-btn:hover{
+      border-color: rgba(37,99,235,.35);
+      transform: translateY(-1px);
+    }
+
+    .copy-btn.copied{
+      background: var(--success-bg);
+      border-color: var(--success-border);
+      color: var(--success-text);
+    }
+
+    pre[class*="language-"]{
+      border-radius: 18px;
+      border: 1px solid rgba(148,163,184,.18);
+      overflow: auto;
+      font-family: var(--mono);
+      font-size: 14px;
+      line-height: 1.75;
+      margin: 10px 0 0;
+      padding: 18px 20px;
+      background: linear-gradient(180deg, #0f172a 0%, #111827 100%) !important;
+      box-shadow: 0 16px 34px rgba(2,6,23,.22);
+    }
+
+    .code-answer-wrap pre[class*="language-"],
+    .code-question-wrap pre[class*="language-"]{
+      margin-top: 0;
+    }
+
+    code[class*="language-"]{
+      font-family: var(--mono);
+      text-shadow: none !important;
+    }
+
+    .token.comment,
+    .token.prolog,
+    .token.doctype,
+    .token.cdata{
+      color: #6b7280;
+      font-style: italic;
+    }
+
+    .token.keyword{
+      color: #f472b6;
+    }
+
+    .token.function{
+      color: #60a5fa;
+    }
+
+    .token.string{
+      color: #fde047;
+    }
+
+    .token.number{
+      color: #c4b5fd;
+    }
+
+    .token.operator,
+    .token.punctuation{
+      color: #e5e7eb;
+    }
+
+    .token.boolean,
+    .token.constant{
+      color: #fb7185;
+    }
+
+    .token.class-name{
+      color: #67e8f9;
+    }
+
+    .token.builtin,
+    .token.type-name{
+      color: #5eead4;
+    }
+
+    .token.variable{
+      color: #f8fafc;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="title">
+        <h1>OOP with C++ — Practice Sheets</h1>
+        <p class="subtitle">Sheet 3 • Basics of OOP — Classes and Objects</p>
+      </div>
+
+      <button class="pill" id="btnPrint" title="Print or Save as PDF">🖨️ Print / PDF</button>
+    </header>
+
+    <div class="panel">
+      <div class="toolbar">
+        <div class="leftTools">
+          <div class="toggle" title="Show or hide answers">
+            <span>Answers</span>
+            <div class="switch" id="answersSwitch" data-on="false" role="switch" aria-checked="false">
+              <div class="knob"></div>
+            </div>
+          </div>
+
+          <div class="toggle" title="Light or dark theme">
+            <span>Dark</span>
+            <div class="switch" id="themeSwitch" data-on="false" role="switch" aria-checked="false">
+              <div class="knob"></div>
+            </div>
+          </div>
+
+          <div class="search" title="Search inside current tab">
+            🔎 <input id="searchInput" placeholder="Search in this tab..." />
+          </div>
+        </div>
+      </div>
+
+      <div class="tabs" id="tabs"></div>
+      <div class="content" id="content"></div>
+    </div>
+  </div>
+
+  <script>
+    const data = {
+      meta: {
+        course: "OOP with C++",
+        sheetTitle: "Sheet 3 — Basics of OOP"
+      },
+      sections: [
+        {
+          id: "mcq",
+          title: "MCQ",
+          items: [
+            {
+              q: "What is a class in C++?",
+              options: [
+                "A built-in loop",
+                "A blueprint for creating objects",
+                "A type of array",
+                "A preprocessor directive"
+              ],
+              correctIndex: 1
+            },
+            {
+              q: "An object is:",
+              options: [
+                "A function inside a class",
+                "A variable created from a class",
+                "A type of compiler error",
+                "A reserved keyword for loops"
+              ],
+              correctIndex: 1
+            },
+            {
+              q: "Which keyword is used to define a class in C++?",
+              options: ["object", "class", "struct", "define"],
+              correctIndex: 1
+            },
+            {
+              q: "Which access specifier allows members to be accessed from outside the class?",
+              options: ["private", "protected", "public", "hidden"],
+              correctIndex: 2
+            },
+            {
+              q: "Which of the following can be members of a class?",
+              options: [
+                "Variables only",
+                "Functions only",
+                "Variables and functions",
+                "Comments only"
+              ],
+              correctIndex: 2
+            },
+            {
+              q: "If car is an object, which syntax correctly accesses its public member speed?",
+              options: ["car->speed", "car.speed", "speed.car", "car:speed"],
+              correctIndex: 1
+            },
+            {
+              q: "What is the main purpose of declaring functions inside a class?",
+              options: [
+                "To make the class larger",
+                "To describe the behavior of objects",
+                "To replace all variables",
+                "To avoid using main()"
+              ],
+              correctIndex: 1
+            },
+            {
+              q: "Which statement is correct about access specifiers in C++?",
+              options: [
+                "There is only one access specifier",
+                "C++ has public, private, and protected",
+                "protected is used for loops",
+                "public cannot be used in classes"
+              ],
+              correctIndex: 1
+            },
+            {
+              q: "What does it mean when we say a class contains data and behavior?",
+              options: [
+                "It contains comments and loops",
+                "It contains variables and member functions",
+                "It contains arrays and files only",
+                "It contains no executable code"
+              ],
+              correctIndex: 1
+            },
+            {
+              q: "Which of the following is a valid class object declaration after defining class Student?",
+              options: ["Student();", "object Student;", "Student s1;", "s1 Student;"],
+              correctIndex: 2
+            }
+          ]
+        },
+        {
+          id: "tf",
+          title: "True / False",
+          items: [
+            {
+              q: "A class can contain both data members and member functions.",
+              answer: "True"
+            },
+            {
+              q: "An object must always have the same name as its class.",
+              answer: "False"
+            },
+            {
+              q: "Public members can be accessed using the dot operator through an object.",
+              answer: "True"
+            },
+            {
+              q: "C++ has three main access specifiers: public, private, and protected.",
+              answer: "True"
+            },
+            {
+              q: "A class definition ends with a semicolon.",
+              answer: "True"
+            }
+          ]
+        },
+        {
+          id: "output",
+          title: "What is the Output?",
+          items: [
+            {
+              q: "What is the output of the following code segment?",
+              code: `#include <iostream>
+using namespace std;
+
+class Box {
+public:
+    int width;
+    int height;
+
+    int area() {
+        return width * height;
+    }
+};
+
+int main() {
+    Box b;
+    b.width = 4;
+    b.height = 5;
+    cout << b.area();
+    return 0;
+}`,
+              answer: "20"
+            },
+            {
+              q: "What is the output of the following code segment?",
+              code: `#include <iostream>
+using namespace std;
+
+class Counter {
+public:
+    int value;
+
+    void increment() {
+        value++;
+    }
+};
+
+int main() {
+    Counter c;
+    c.value = 7;
+    c.increment();
+    c.increment();
+    cout << c.value;
+    return 0;
+}`,
+              answer: "9"
+            }
+          ]
+        },
+        {
+          id: "write",
+          title: "Write Code",
+          items: [
+            {
+              q: `Create a class called Student.
+
+The class must contain:
+• name
+• id
+• gpa
+
+Also add a public function printInfo() that prints all student information.
+
+Inside main():
+• Create one Student object
+• Assign values using the dot operator
+• Call printInfo()`,
+              category: "Classes and Objects",
+              code: `#include <iostream>
+#include <string>
+using namespace std;
+
+class Student {
+public:
+    string name;
+    int id;
+    float gpa;
+
+    void printInfo() {
+        cout << "Student Name: " << name << endl;
+        cout << "Student ID: " << id << endl;
+        cout << "GPA: " << gpa << endl;
+    }
+};
+
+int main() {
+    Student s1;
+    s1.name = "Ahmed";
+    s1.id = 2026;
+    s1.gpa = 3.7;
+
+    s1.printInfo();
+
+    return 0;
+}`
+            },
+            {
+              q: `Create a class called Rectangle.
+
+The class must contain:
+• length
+• width
+
+Add a public function area() that prints the area.
+
+Inside main():
+• Create one Rectangle object
+• Assign values
+• Call area()`,
+              category: "Member Functions",
+              code: `#include <iostream>
+using namespace std;
+
+class Rectangle {
+public:
+    int length;
+    int width;
+
+    void area() {
+        cout << "Area = " << length * width << endl;
+    }
+};
+
+int main() {
+    Rectangle r1;
+    r1.length = 8;
+    r1.width = 3;
+
+    r1.area();
+
+    return 0;
+}`
+            },
+            {
+              q: `Create a class called Car.
+
+The class must contain:
+• brand
+• speed
+
+Add two public functions:
+• setData() to assign values
+• showData() to print the values
+
+Inside main():
+• Create one Car object
+• Use setData()
+• Use showData()`,
+              category: "Basic Class Design",
+              code: `#include <iostream>
+#include <string>
+using namespace std;
+
+class Car {
+public:
+    string brand;
+    int speed;
+
+    void setData(string b, int s) {
+        brand = b;
+        speed = s;
+    }
+
+    void showData() {
+        cout << "Brand: " << brand << endl;
+        cout << "Speed: " << speed << endl;
+    }
+};
+
+int main() {
+    Car c1;
+    c1.setData("BMW", 220);
+    c1.showData();
+
+    return 0;
+}`
+            }
+          ]
+        },
+        {
+          id: "debug",
+          title: "Debug / Find the Error",
+          items: [
+            {
+              q: "Find and correct the error(s) in the following code:",
+              code: `#include <iostream>
+using namespace std;
+
+class Student {
+public
+    int id;
+};
+
+int main() {
+    Student s1;
+    s1.id = 10;
+    cout << s1.id;
+    return 0;
+}`,
+              answer: `The colon is missing after public.
+
+Wrong:
+public
+
+Correct:
+public:`
+            },
+            {
+              q: "Find and correct the error(s) in the following code:",
+              code: `#include <iostream>
+using namespace std;
+
+class Car {
+public:
+    int speed;
+
+    void showSpeed() {
+        cout << speed << endl;
+    }
+}
+
+int main() {
+    Car c1;
+    c1.speed = 180;
+    c1.showSpeed();
+    return 0;
+}`,
+              answer: `The class definition must end with a semicolon.
+
+Add:
+};`
+            }
+          ]
+        },
+        {
+          id: "theory",
+          title: "Theory",
+          items: [
+            {
+              q: "If many students in a system have the same kind of data such as name, id, and GPA, what OOP idea would help organize this, and why?",
+              answer: "A class is suitable because it defines one common blueprint, and then many student objects can be created from it.",
+              category: "Classes"
+            },
+            {
+              q: "Why is it useful to place functions such as printInfo() or area() inside the class instead of writing all logic separately in main()?",
+              answer: "Because the function becomes part of the object’s behavior, which makes the code more organized, reusable, and easier to understand.",
+              category: "Member Functions"
+            }
+          ]
+        }
+      ]
+    };
+
+    const els = {
+      tabs: document.getElementById("tabs"),
+      content: document.getElementById("content"),
+      answersSwitch: document.getElementById("answersSwitch"),
+      themeSwitch: document.getElementById("themeSwitch"),
+      searchInput: document.getElementById("searchInput"),
+      btnPrint: document.getElementById("btnPrint")
+    };
+
+    let state = {
+      activeSectionId: data.sections[0]?.id ?? null,
+      showAnswers: false,
+      theme: "light",
+      search: ""
+    };
+
+    function setSwitch(el, on){
+      el.dataset.on = String(on);
+      el.setAttribute("aria-checked", on ? "true" : "false");
+    }
+
+    function applyTheme(theme){
+      document.documentElement.setAttribute("data-theme", theme);
+      state.theme = theme;
+      localStorage.setItem("sheet_theme", theme);
+      setSwitch(els.themeSwitch, theme === "dark");
+      if (window.Prism) Prism.highlightAll();
+    }
+
+    function applyAnswers(on){
+      state.showAnswers = on;
+      localStorage.setItem("sheet_answers", on ? "1" : "0");
+      setSwitch(els.answersSwitch, on);
+
+      document.querySelectorAll(".answer").forEach(a => {
+        a.style.display = on ? "block" : "none";
+      });
+
+      document.querySelectorAll(".output-answer").forEach(a => {
+        a.style.display = on ? "block" : "none";
+      });
+
+      document.querySelectorAll(".tf-badge").forEach(b => {
+        b.style.display = on ? "inline-block" : "none";
+      });
+
+      document.querySelectorAll(".code-answer-wrap").forEach(w => {
+        w.style.display = on ? "block" : "none";
+      });
+
+      document.querySelectorAll(".options .opt").forEach(li => {
+        if (on && li.classList.contains("is-correct")) li.classList.add("correct");
+        else li.classList.remove("correct");
+      });
+    }
+
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;");
+    }
+
+    function getActiveSection(){
+      return data.sections.find(s => s.id === state.activeSectionId) ?? data.sections[0];
+    }
+
+    function renderTabs(){
+      els.tabs.innerHTML = "";
+      data.sections.forEach(sec => {
+        const btn = document.createElement("button");
+        btn.className = "tab" + (sec.id === state.activeSectionId ? " active" : "");
+        const count = sec.items?.length ?? 0;
+        btn.innerHTML = `${sec.title} <span class="badge">${count}</span>`;
+        btn.addEventListener("click", () => {
+          state.activeSectionId = sec.id;
+          state.search = "";
+          els.searchInput.value = "";
+          renderTabs();
+          renderContent();
+        });
+        els.tabs.appendChild(btn);
+      });
+    }
+
+    function renderContent(){
+      const sec = getActiveSection();
+      const qItems = sec.items ?? [];
+
+      const filtered = qItems.filter(item => {
+        if (!state.search.trim()) return true;
+        const hay = JSON.stringify(item).toLowerCase();
+        return hay.includes(state.search.trim().toLowerCase());
+      });
+
+      els.content.innerHTML = filtered.map((item, idx) => {
+        const num = idx + 1;
+        const hasOptions = Array.isArray(item.options) && item.options.length;
+        const hasCode = !!item.code;
+
+        const hasTextAnswer =
+          (typeof item.answer === "string" && item.answer.trim() !== "") ||
+          (typeof item.explain === "string" && item.explain.trim() !== "");
+
+        const hasTfAnswer =
+          sec.id === "tf" &&
+          typeof item.answer === "string" &&
+          item.answer.trim() !== "";
+
+        const categoryLabel =
+          item.category
+            ? `${escapeHtml(sec.title)} • ${escapeHtml(item.category)}`
+            : escapeHtml(sec.title);
+
+        let questionClass = "q";
+        if (sec.id === "write") questionClass += " write-question";
+        if (sec.id === "theory") questionClass += " theory-question";
+
+        return `
+          <div class="${questionClass}">
+            <div class="qHead">
+              <div>
+                ${sec.id === "theory" && item.category ? `<div class="theory-topic">${escapeHtml(item.category)}</div>` : ""}
+                <p class="qTitle">${num}) ${escapeHtml(item.q)}</p>
+              </div>
+              <span class="qMeta">${categoryLabel}</span>
+            </div>
+
+            <div class="qBody">
+              ${hasOptions ? `
+                <ol class="options" type="A">
+                  ${item.options.map((opt, i) => {
+                    const isCorrect = typeof item.correctIndex === "number" && i === item.correctIndex;
+                    return `<li class="opt ${isCorrect ? "is-correct" : ""}">${escapeHtml(opt)}</li>`;
+                  }).join("")}
+                </ol>
+              ` : ""}
+
+              ${hasTfAnswer ? `
+                <div class="tf-badge ${item.answer === "True" ? "tf-true" : "tf-false"}">${escapeHtml(item.answer)}</div>
+              ` : ""}
+
+              ${sec.id === "output" && hasTextAnswer ? `
+                <div class="output-answer">
+                  <div class="label"><b>Answer</b></div>
+                  ${item.answer ? `<div>${escapeHtml(item.answer)}</div>` : ""}
+                </div>
+              ` : ""}
+
+              ${(sec.id !== "tf" && sec.id !== "write" && sec.id !== "output" && hasTextAnswer) ? `
+                <div class="answer">
+                  <div class="label"><b>Answer</b></div>
+                  ${item.answer ? `<div>${escapeHtml(item.answer)}</div>` : ""}
+                  ${item.explain ? `<div style="margin-top:8px;color:var(--muted);font-size:13px;"><b>Explanation:</b> ${escapeHtml(item.explain)}</div>` : ""}
+                </div>
+              ` : ""}
+
+              ${hasCode ? `
+                <div class="${sec.id === "write" ? "code-answer-wrap" : "code-question-wrap"}">
+                  <div class="code-toolbar">
+                    <button class="copy-btn" type="button" data-code="${encodeURIComponent(item.code)}">📋 Copy Code</button>
+                  </div>
+                  <pre class="language-cpp"><code class="language-cpp">${escapeHtml(item.code)}</code></pre>
+                </div>
+              ` : ""}
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      bindCopyButtons();
+      applyAnswers(state.showAnswers);
+      if (window.Prism) Prism.highlightAll();
+    }
+
+    function bindCopyButtons(){
+      document.querySelectorAll(".copy-btn").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          const code = decodeURIComponent(btn.dataset.code || "");
+          try {
+            await navigator.clipboard.writeText(code);
+            const oldText = btn.innerHTML;
+            btn.innerHTML = "✅ Copied";
+            btn.classList.add("copied");
+            setTimeout(() => {
+              btn.innerHTML = oldText;
+              btn.classList.remove("copied");
+            }, 1400);
+          } catch (err) {
+            const textarea = document.createElement("textarea");
+            textarea.value = code;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textarea);
+
+            const oldText = btn.innerHTML;
+            btn.innerHTML = "✅ Copied";
+            btn.classList.add("copied");
+            setTimeout(() => {
+              btn.innerHTML = oldText;
+              btn.classList.remove("copied");
+            }, 1400);
+          }
+        });
+      });
+    }
+
+    els.searchInput.addEventListener("input", (e) => {
+      state.search = e.target.value;
+      renderContent();
+    });
+
+    els.btnPrint.addEventListener("click", () => window.print());
+    els.answersSwitch.addEventListener("click", () => applyAnswers(!state.showAnswers));
+    els.themeSwitch.addEventListener("click", () => applyTheme(state.theme === "dark" ? "light" : "dark"));
+
+    (function init(){
+      renderTabs();
+      renderContent();
+
+      const savedTheme = localStorage.getItem("sheet_theme");
+      if (savedTheme === "dark" || savedTheme === "light") {
+        applyTheme(savedTheme);
+      } else {
+        const systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        applyTheme(systemDark ? "dark" : "light");
+      }
+
+      const savedAnswers = localStorage.getItem("sheet_answers");
+      applyAnswers(savedAnswers === "1");
+    })();
+  </script>
+</body>
+</html>
