@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C++ Practice Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=Fraunces:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root[data-theme="dark"] {
+  --bg:#080c14; --surf:#0e1525; --card:#111d30; --card2:#152238;
+  --border:rgba(99,132,185,.1); --border-md:rgba(99,132,185,.2); --border-hi:rgba(96,165,250,.45);
+  --text:#e8eef7; --body:#a8bcda; --muted:#4e6585;
+  --A:#60a5fa; --A-d:rgba(96,165,250,.09);
+  --G:#4ade80; --G-d:rgba(74,222,128,.08);
+  --O:#fb923c; --O-d:rgba(251,146,60,.08);
+  --R:#f87171; --R-d:rgba(248,113,113,.08);
+  --V:#c084fc; --V-d:rgba(192,132,252,.08);
+  --code-bg:#06101f;
+  --kw:#f472b6; --ty:#4ade80; --cm:#3a5070; --st:#fbbf24; --nm:#60a5fa; --num:#c084fc;
+  --nav-bg:rgba(8,12,20,.92);
+  --q-bg:rgba(251,146,60,.07); --q-border:rgba(251,146,60,.3);
+}
+:root[data-theme="light"] {
+  --bg:#f5f7fc; --surf:#fff; --card:#fff; --card2:#f0f5ff;
+  --border:rgba(30,58,138,.08); --border-md:rgba(30,58,138,.14); --border-hi:rgba(37,99,235,.45);
+  --text:#0a1628; --body:#2d4163; --muted:#8ba0c0;
+  --A:#1d4ed8; --A-d:rgba(29,78,216,.07);
+  --G:#16a34a; --G-d:rgba(22,163,74,.07);
+  --O:#c2410c; --O-d:rgba(194,65,12,.07);
+  --R:#dc2626; --R-d:rgba(220,38,38,.07);
+  --V:#7c3aed; --V-d:rgba(124,58,237,.07);
+  --code-bg:#0f172a;
+  --kw:#f472b6; --ty:#4ade80; --cm:#4a5568; --st:#f59e0b; --nm:#60a5fa; --num:#c084fc;
+  --nav-bg:rgba(245,247,252,.95);
+  --q-bg:rgba(194,65,12,.06); --q-border:rgba(194,65,12,.25);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .3s,color .3s;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;background:var(--nav-bg);backdrop-filter:blur(18px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:54px;}
+.nav-logo{font-weight:900;font-size:.95rem;letter-spacing:-.02em;}
+.nav-logo em{font-style:normal;color:var(--A);}
+.nav-parts{display:flex;gap:2px;list-style:none;}
+.nav-parts a{font-size:.67rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:5px 10px;border-radius:6px;transition:all .2s;}
+.nav-parts a:hover{color:var(--A);background:var(--A-d);}
+.theme-btn{cursor:pointer;background:var(--card);border:1px solid var(--border-md);border-radius:20px;padding:5px 14px;font-family:'Cabinet Grotesk',sans-serif;font-size:.67rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);transition:all .2s;}
+.theme-btn:hover{color:var(--A);border-color:var(--border-hi);}
+
+/* HERO */
+.hero{position:relative;z-index:1;padding:110px 40px 56px;max-width:820px;margin:0 auto;}
+.hero-eyebrow{font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--G);margin-bottom:18px;display:flex;align-items:center;gap:8px;}
+.hero-eyebrow::before{content:'';width:24px;height:2px;background:var(--G);border-radius:2px;}
+.hero h1{font-size:clamp(2.4rem,5vw,4rem);font-weight:900;letter-spacing:-.04em;line-height:.98;margin-bottom:20px;}
+.hero h1 .hl{color:var(--A);}
+.hero-chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{font-size:.62rem;font-weight:700;letter-spacing:.06em;color:var(--muted);border:1px solid var(--border-md);padding:3px 10px;border-radius:100px;transition:all .2s;cursor:default;}
+.chip:hover{color:var(--A);border-color:var(--A);background:var(--A-d);}
+
+/* LAYOUT */
+.page{position:relative;z-index:1;max-width:1060px;margin:0 auto;padding:0 40px 100px;display:grid;grid-template-columns:200px 1fr;gap:48px;align-items:start;}
+
+/* SIDEBAR */
+.sidebar{position:sticky;top:70px;display:flex;flex-direction:column;gap:2px;}
+.sb-head{font-size:.58rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);padding:0 8px;margin-bottom:8px;}
+.sidebar a{display:flex;align-items:center;gap:8px;font-size:.75rem;font-weight:600;color:var(--muted);text-decoration:none;padding:7px 8px;border-radius:8px;transition:all .2s;border-left:2px solid transparent;}
+.sidebar a:hover,.sidebar a.act{color:var(--A);background:var(--A-d);border-left-color:var(--A);}
+.sidebar a .sn{font-size:.58rem;font-weight:800;min-width:18px;opacity:.5;}
+.sidebar a:hover .sn,.sidebar a.act .sn{opacity:1;}
+.sb-div{height:1px;background:var(--border);margin:5px 8px;}
+.sb-part{font-size:.6rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:8px 8px 4px;margin-top:4px;}
+
+/* PART HEADER */
+.part-banner{display:flex;align-items:center;gap:16px;padding:22px 26px;background:var(--card);border:1px solid var(--border-hi);border-radius:16px;margin-bottom:32px;}
+.part-num{font-size:2.2rem;font-weight:900;letter-spacing:-.05em;color:var(--A);line-height:1;min-width:48px;}
+.part-info .part-label{font-size:.58rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.part-info h2{font-size:1.5rem;font-weight:900;letter-spacing:-.02em;}
+.part-info .part-sub{font-family:'Fraunces',serif;font-size:.85rem;color:var(--body);margin-top:4px;}
+
+/* TOPIC */
+.topic{margin-bottom:64px;opacity:0;transform:translateY(20px);transition:opacity .5s,transform .5s;}
+.topic.vis{opacity:1;transform:none;}
+.topic-hd{display:flex;align-items:center;gap:14px;margin-bottom:8px;}
+.topic-n{font-size:.58rem;font-weight:900;letter-spacing:.12em;color:var(--muted);border:1px solid var(--border-md);padding:3px 9px;border-radius:5px;flex-shrink:0;}
+.topic h3{font-size:1.35rem;font-weight:900;letter-spacing:-.025em;}
+.topic-tagline{font-family:'Fraunces',serif;font-size:.88rem;color:var(--body);line-height:1.75;margin-bottom:20px;border-left:2px solid var(--border-md);padding-left:14px;}
+
+/* EXPLAIN */
+.explain{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px 22px;margin-bottom:14px;}
+.explain-label{font-size:.58rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:9px;display:flex;align-items:center;gap:6px;}
+.explain-label::before{content:'';width:14px;height:1px;background:currentColor;}
+.explain h4{font-size:.98rem;font-weight:800;letter-spacing:-.015em;margin-bottom:9px;}
+.explain p{font-family:'Fraunces',serif;font-size:.88rem;line-height:1.85;color:var(--body);margin-bottom:9px;}
+.explain p:last-child{margin-bottom:0;}
+.explain strong{color:var(--text);}
+.bl{list-style:none;padding:0;display:flex;flex-direction:column;gap:5px;margin:7px 0;}
+.bl li{display:flex;align-items:flex-start;gap:9px;font-size:.8rem;color:var(--body);line-height:1.65;}
+.bl li::before{content:'→';color:var(--A);flex-shrink:0;font-size:.7rem;margin-top:2px;}
+
+/* Q CARD */
+.q-card{background:var(--q-bg);border:1px solid var(--q-border);border-radius:12px;padding:16px 18px;margin:12px 0;display:flex;gap:12px;align-items:flex-start;}
+.q-icon{width:30px;height:30px;background:var(--O-d);border:1px solid var(--q-border);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.q-label{font-size:.58rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--O);margin-bottom:4px;}
+.q-text{font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:5px;line-height:1.5;}
+.q-ans{font-family:'Fraunces',serif;font-size:.8rem;color:var(--body);line-height:1.75;}
+.q-ans strong{color:var(--O);}
+
+/* TIP */
+.tip{display:flex;gap:11px;align-items:flex-start;border-radius:10px;padding:13px 15px;margin:11px 0;}
+.tip.blue{background:var(--A-d);border:1px solid rgba(96,165,250,.2);border-left:3px solid var(--A);}
+.tip.green{background:var(--G-d);border:1px solid rgba(74,222,128,.2);border-left:3px solid var(--G);}
+.tip.red{background:var(--R-d);border:1px solid rgba(248,113,113,.2);border-left:3px solid var(--R);}
+.tip.violet{background:var(--V-d);border:1px solid rgba(192,132,252,.2);border-left:3px solid var(--V);}
+.tip-icon{font-size:.88rem;flex-shrink:0;}
+.tip-text{font-size:.78rem;line-height:1.7;color:var(--body);}
+.tip-text strong{color:var(--text);}
+
+/* CODE */
+.code-wrap{background:var(--code-bg);border:1px solid var(--border-md);border-radius:12px;overflow:hidden;margin:11px 0;font-family:'JetBrains Mono',monospace;}
+.code-hd{display:flex;align-items:center;justify-content:space-between;padding:7px 15px;background:rgba(255,255,255,.03);border-bottom:1px solid var(--border);}
+.code-title{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+.code-dots{display:flex;gap:4px;}
+.code-dots span{width:9px;height:9px;border-radius:50%;}
+.code-dots span:nth-child(1){background:#ef4444;opacity:.5;}
+.code-dots span:nth-child(2){background:#eab308;opacity:.5;}
+.code-dots span:nth-child(3){background:#22c55e;opacity:.5;}
+.code-wrap pre{padding:16px 18px;font-size:.74rem;line-height:1.85;overflow-x:auto;color:#94a3b8;margin:0;}
+.kw{color:var(--kw);font-weight:600;} .ty{color:var(--ty);} .cm{color:var(--cm);font-style:italic;}
+.st{color:var(--st);} .nm{color:var(--nm);} .num{color:var(--num);}
+.hl-line{background:rgba(96,165,250,.07);display:block;margin:0 -18px;padding:0 18px;border-left:2px solid var(--A);}
+.hl-line-g{background:rgba(74,222,128,.07);display:block;margin:0 -18px;padding:0 18px;border-left:2px solid var(--G);}
+.hl-line-r{background:rgba(248,113,113,.07);display:block;margin:0 -18px;padding:0 18px;border-left:2px solid var(--R);}
+
+/* HIGHLIGHT TEXT */
+.ht{background:rgba(96,165,250,.15);color:var(--A);border-radius:4px;padding:1px 5px;font-weight:700;}
+:root[data-theme="light"] .ht{background:rgba(29,78,216,.1);}
+
+/* SIDE2 */
+.side2{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:11px 0;}
+.s2-item{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:13px 15px;}
+.s2-label{font-size:.58rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.s2-val{font-size:.8rem;font-weight:600;color:var(--text);line-height:1.5;}
+.s2-sub{font-size:.7rem;color:var(--muted);margin-top:3px;}
+
+/* EXAMPLE TASK */
+.task{background:var(--A-d);border:1px solid rgba(96,165,250,.25);border-radius:12px;padding:18px 20px;margin:14px 0;}
+.task-label{font-size:.58rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--A);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.task-label::before{content:'✏';font-size:.75rem;}
+.task-text{font-family:'Fraunces',serif;font-size:.86rem;color:var(--body);line-height:1.8;}
+.task-text strong{color:var(--text);}
+.task ul{list-style:none;padding:0;margin-top:8px;display:flex;flex-direction:column;gap:4px;}
+.task ul li{font-size:.78rem;color:var(--body);display:flex;align-items:flex-start;gap:8px;line-height:1.6;}
+.task ul li::before{content:'•';color:var(--A);flex-shrink:0;}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;font-size:.77rem;border-radius:10px;overflow:hidden;border:1px solid var(--border-md);margin:11px 0;}
+.tbl th{background:var(--card2);padding:8px 14px;text-align:left;font-weight:800;font-size:.6rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border-md);}
+.tbl td{padding:9px 14px;border-bottom:1px solid var(--border);color:var(--body);}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:var(--A-d);color:var(--text);}
+
+/* STEPS */
+.steps{display:flex;flex-direction:column;gap:9px;margin:11px 0;}
+.step{display:flex;gap:13px;align-items:flex-start;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;}
+.step-n{width:25px;height:25px;border-radius:50%;background:var(--A-d);border:1px solid var(--A);color:var(--A);font-size:.65rem;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.step-title{font-size:.8rem;font-weight:700;color:var(--text);margin-bottom:2px;}
+.step-desc{font-size:.74rem;color:var(--body);line-height:1.6;}
+.step-desc code{font-family:'JetBrains Mono',monospace;font-size:.7rem;background:var(--card);padding:1px 5px;border-radius:4px;color:var(--A);}
+
+/* PART DIVIDER */
+.part-divider{height:1px;background:linear-gradient(90deg,transparent,var(--border-md),transparent);margin:20px 0 56px;}
+
+/* FOOTER */
+footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:26px 40px;display:flex;justify-content:space-between;align-items:center;max-width:1060px;margin:0 auto;}
+.ft-l{font-size:.72rem;color:var(--muted);}
+.ft-r{font-size:.65rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--A);}
+
+/* RESPONSIVE */
+@media(max-width:780px){
+  nav{padding:0 18px;} .nav-parts{display:none;}
+  .hero{padding:90px 18px 48px;}
+  .page{grid-template-columns:1fr;padding:0 18px 60px;gap:0;}
+  .sidebar{display:none;} .side2{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">C++<em>.guide</em></div>
+  <ul class="nav-parts">
+    <li><a href="#cls-basics">Classes</a></li>
+    <li><a href="#str-basics">Structures</a></li>
+    <li><a href="#fn-basics">Functions</a></li>
+  </ul>
+  <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">☀ Light</button>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">ECE-203 · C++ Practice Guide</div>
+  <h1>Classes · Structures<br><span class="hl">Functions</span></h1>
+  <div class="hero-chips">
+    <span class="chip">Classes & Objects</span>
+    <span class="chip">Constructors</span>
+    <span class="chip">Destructor</span>
+    <span class="chip">Structures</span>
+    <span class="chip">Arrays in Structs</span>
+    <span class="chip">Nested Structs</span>
+    <span class="chip">Functions</span>
+    <span class="chip">Pass by Value & Reference</span>
+  </div>
+</section>
+
+<div class="page">
+<aside class="sidebar">
+  <div class="sb-part">Part 1 — Classes</div>
+  <a href="#cls-basics"><span class="sn">1.1</span> Class Basics</a>
+  <a href="#cls-access"><span class="sn">1.2</span> Access Specifiers</a>
+  <a href="#cls-ctor"><span class="sn">1.3</span> Constructors</a>
+  <a href="#cls-dtor"><span class="sn">1.4</span> Destructor</a>
+  <div class="sb-div"></div>
+  <div class="sb-part">Part 2 — Structures</div>
+  <a href="#str-basics"><span class="sn">2.1</span> Struct Basics</a>
+  <a href="#str-arrays"><span class="sn">2.2</span> Arrays & Nesting</a>
+  <a href="#str-ops"><span class="sn">2.3</span> Struct Operations</a>
+  <div class="sb-div"></div>
+  <div class="sb-part">Part 3 — Functions</div>
+  <a href="#fn-basics"><span class="sn">3.1</span> Function Basics</a>
+  <a href="#fn-scope"><span class="sn">3.2</span> Global vs Local</a>
+  <a href="#fn-params"><span class="sn">3.3</span> Parameters vs Arguments</a>
+  <a href="#fn-ref"><span class="sn">3.4</span> Pass by Value & Reference</a>
+</aside>
+
+<main>
+
+<!-- ══════════════════════════════════════════
+     PART 1 — CLASSES
+══════════════════════════════════════════ -->
+
+<!-- 1.1 CLASS BASICS -->
+<section class="topic" id="cls-basics">
+  <div class="topic-hd"><span class="topic-n">1.1</span><h3>Class Basics</h3></div>
+  <p class="topic-tagline">A class defines what an object looks like and what it can do. Every object created from a class gets its own copy of the data.</p>
+
+  <div class="explain">
+    <div class="explain-label">Data & Behaviour</div>
+    <h4>Every class has two parts</h4>
+    <div class="side2">
+      <div class="s2-item">
+        <div class="s2-label">Data Members</div>
+        <div class="s2-val">Variables that hold the object's data</div>
+        <div class="s2-sub">Also called: attributes, fields</div>
+      </div>
+      <div class="s2-item">
+        <div class="s2-label">Member Functions</div>
+        <div class="s2-val">Functions that define what the object can do</div>
+        <div class="s2-sub">Also called: methods, behaviours</div>
+      </div>
+    </div>
+    <div class="code-wrap">
+      <div class="code-hd"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-title">Employee class — full example from your course</span></div>
+      <pre><span class="kw">class</span> <span class="ty">Employee</span> {
+    <span class="cm">// Data Members — private</span>
+  <span class="kw">private</span>:
+    <span class="ty">int</span>    id;
+    <span class="ty">float</span>  salary;
+    <span class="ty">string</span> name;
+
+    <span class="cm">// Member Functions — public</span>
+  <span class="kw">public</span>:
+    <span class="ty">Employee</span>() {           <span class="cm">// Default Constructor</span>
+        id     = <span class="num">0</span>;
+        salary = <span class="num">0</span>;
+        name   = <span class="st">""</span>;
+    }
+
+    <span class="ty">Employee</span>(<span class="ty">int</span> i, <span class="ty">float</span> s, <span class="ty">string</span> n) {  <span class="cm">// Parameterized Constructor</span>
+        id     = i;
+        salary = s;
+        name   = n;
+    }
+
+    <span class="ty">void</span> <span class="nm">printInfo</span>() {
+        cout &lt;&lt; <span class="st">"ID = "</span>     &lt;&lt; id     &lt;&lt; endl;
+        cout &lt;&lt; <span class="st">"Salary = "</span> &lt;&lt; salary &lt;&lt; endl;
+        cout &lt;&lt; <span class="st">"Name = "</span>   &lt;&lt; name   &lt;&lt; endl;
+    }
+};
+
+<span class="ty">int</span> <span class="nm">main</span>() {
+    <span class="ty">Employee</span> employee1;                         <span class="cm">// uses default constructor</span>
+    <span class="ty">Employee</span> employee2(<span class="num">1</span>, <span class="num">1000</span>, <span class="st">"Ahmed"</span>);      <span class="cm">// uses parameterized constructor</span>
+    employee2.<span class="nm">printInfo</span>();
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+    </div>
+  </div>
+</section>
+
+<!-- 1.2 ACCESS SPECIFIERS -->
+<section class="topic" id="cls-access">
+  <div class="topic-hd"><span class="topic-n">1.2</span><h3>Access Specifiers</h3></div>
+  <p class="topic-tagline">Two keywords that control who can see and use each member of the class.</p>
+
+  <div class="explain">
+    <div class="explain-label">public & private</div>
+    <h4>The two specifiers you use right now</h4>
+    <table class="tbl">
+      <thead><tr><th>Specifier</th><th>Who can access it?</th><th>Used for</th></tr></thead>
+      <tbody>
+        <tr><td><span style="color:var(--G);font-weight:700;">public</span></td><td>Anywhere in the program</td><td>Member functions, constructors</td></tr>
+        <tr><td><span style="color:var(--R);font-weight:700;">private</span></td><td>Only inside the class itself</td><td>Data members</td></tr>
+      </tbody>
+    </table>
+    <div class="tip blue">
+      <span class="tip-icon">💡</span>
+      <div class="tip-text">The rule you always follow: <strong>data members → private</strong>, <strong>member functions → public</strong>. This protects the data from being changed directly from outside the class.</div>
+    </div>
+    <div class="code-wrap">
+      <div class="code-hd"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-title">What happens when you try to access private data</span></div>
+      <pre><span class="ty">Employee</span> emp(<span class="num">1</span>, <span class="num">1000</span>, <span class="st">"Ahmed"</span>);
+
+<span class="hl-line-r">emp.salary = <span class="num">5000</span>;    <span class="cm">// ✘ ERROR — salary is private</span></span>
+<span class="hl-line-g">emp.<span class="nm">printInfo</span>();      <span class="cm">// ✔ OK — printInfo() is public</span></span></pre>
+    </div>
+  </div>
+</section>
+
+<!-- 1.3 CONSTRUCTORS -->
+<section class="topic" id="cls-ctor">
+  <div class="topic-hd"><span class="topic-n">1.3</span><h3>Constructors & Overloading</h3></div>
+  <p class="topic-tagline">A constructor runs automatically when an object is created. It sets the starting values for the data members.</p>
+
+  <div class="q-card">
+    <div class="q-icon">?</div>
+    <div class="q-body">
+      <div class="q-label">Why This Matters</div>
+      <div class="q-text">What happens if you create an object and never set its data?</div>
+      <div class="q-ans">The data members will hold random leftover values from memory — not zero, not empty. If you then call <code>printInfo()</code>, the output will be meaningless. A constructor makes sure every object starts with known values right away.</div>
+    </div>
+  </div>
+
+  <div class="explain">
+    <div class="explain-label">Constructor Rules</div>
+    <h4>What makes a constructor different</h4>
+    <div class="steps">
+      <div class="step"><div class="step-n">1</div><div class="step-body"><div class="step-title">Same name as the class</div><div class="step-desc">If the class is <code>Employee</code>, the constructor is also <code>Employee</code></div></div></div>
+      <div class="step"><div class="step-n">2</div><div class="step-body"><div class="step-title"><span class="ht">No return type — not even void</span></div><div class="step-desc">This is how C++ knows it is a constructor, not a regular function</div></div></div>
+      <div class="step"><div class="step-n">3</div><div class="step-body"><div class="step-title"><span class="ht">Called automatically</span></div><div class="step-desc">Runs the moment you write <code>Employee emp;</code> — you never call it yourself</div></div></div>
+      <div class="step"><div class="step-n">4</div><div class="step-body"><div class="step-title">Always public</div><div class="step-desc">So that code in main() can create objects</div></div></div>
+    </div>
+  </div>
+
+  <div class="explain">
+    <div class="explain-label">Constructor Overloading</div>
+    <h4>Default vs Parameterized</h4>
+    <p>You can have more than one constructor in the same class, as long as they have different parameters. This is called <strong>constructor overloading</strong>.</p>
+    <div class="side2">
+      <div class="s2-item">
+        <div class="s2-label">Default Constructor</div>
+        <div class="s2-val">No parameters — sets everything to a starting value</div>
+        <div class="s2-sub">Called when you write: <code>Employee emp;</code></div>
+      </div>
+      <div class="s2-item">
+        <div class="s2-label">Parameterized Constructor</div>
+        <div class="s2-val">Takes values and assigns them directly</div>
+        <div class="s2-sub">Called when you write: <code>Employee emp(1, 1000, "Ahmed");</code></div>
+      </div>
+    </div>
+    <div class="code-wrap">
+      <div class="code-hd"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-title">Both constructors side by side</span></div>
+      <pre><span class="cm">// Default — no arguments</span>
+<span class="ty">Employee</span>() {
+    id     = <span class="num">0</span>;
+    salary = <span class="num">0</span>;
+    name   = <span class="st">""</span>;
+}
+
+<span class="cm">// Parameterized — receives values</span>
+<span class="ty">Employee</span>(<span class="ty">int</span> i, <span class="ty">float</span> s, <span class="ty">string</span> n) {
+    id     = i;
+    salary = s;
+    name   = n;
+}
+
+<span class="cm">// In main():</span>
+<span class="ty">Employee</span> emp1;                         <span class="cm">// → default  : id=0, salary=0, name=""</span>
+<span class="ty">Employee</span> emp2(<span class="num">1</span>, <span class="num">1000</span>, <span class="st">"Ahmed"</span>);      <span class="cm">// → parameterized : id=1, salary=1000</span></pre>
+    </div>
+    <div class="tip red">
+      <span class="tip-icon">⚠️</span>
+      <div class="tip-text"><strong>Always assign values in the constructor.</strong> If you skip this, the object's data contains random values. Printing it or using it before setting values is a common source of errors.</div>
+    </div>
+  </div>
+
+  <div class="tip blue">
+    <span class="tip-icon">📌</span>
+    <div class="tip-text"><strong>Watch your output format.</strong> When printing, <code>endl</code> moves to a new line and flushes the output. <code>"\n"</code> also moves to a new line but does not flush. Use whichever the question asks for — if not specified, <code>endl</code> is the safer choice.</div>
+  </div>
+</section>
+
+<!-- 1.4 DESTRUCTOR -->
+<section class="topic" id="cls-dtor">
+  <div class="topic-hd"><span class="topic-n">1.4</span><h3>Destructor</h3></div>
+  <p class="topic-tagline">The destructor is the opposite of the constructor — it runs automatically when an object is destroyed.</p>
+
+  <div class="explain">
+    <div class="explain-label">How It Works</div>
+    <h4>Automatic cleanup when an object's life ends</h4>
+    <p>When an object goes out of scope — for example, when a function ends — C++ automatically calls the destructor. You don't call it yourself.</p>
+    <ul class="bl">
+      <li>Same name as the class, with <span class="ht">~ before it</span> — e.g. <code>~Employee()</code></li>
+      <li>No parameters and no return type</li>
+      <li><span class="ht">Only one destructor per class</span> — it cannot be overloaded</li>
+      <li>For most classes in this course, you don't need to write one — C++ handles it</li>
+    </ul>
+    <div class="code-wrap">
+      <div class="code-hd"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-title">Constructor and destructor — lifecycle</span></div>
+      <pre><span class="kw">class</span> <span class="ty">Employee</span> {
+  <span class="kw">public</span>:
+    <span class="ty">Employee</span>()  { cout &lt;&lt; <span class="st">"Employee created"</span>  &lt;&lt; endl; }
+   ~<span class="ty">Employee</span>() { cout &lt;&lt; <span class="st">"Employee destroyed"</span> &lt;&lt; endl; }
+};
+
+<span class="ty">int</span> <span class="nm">main</span>() {
+    <span class="ty">Employee</span> emp;     <span class="cm">// → "Employee created"</span>
+    <span class="kw">return</span> <span class="num">0</span>;
+}                      <span class="cm">// → "Employee destroyed"  (main ends, emp is gone)</span></pre>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     PART 2 — STRUCTURES
+══════════════════════════════════════════ -->
+
+<!-- 2.1 STRUCT BASICS -->
+<section class="topic" id="str-basics">
+  <div class="topic-hd"><span class="topic-n">2.1</span><h3>Struct Basics</h3></div>
+  <p class="topic-tagline">A struct groups related variables of different types together under one name. Each variable you create from it gets its own independent copy of the data.</p>
+
+  <div class="explain">
+    <div class="explain-label">Defining & Using</div>
+    <h4>The Employee as a struct</h4>
+    <p>The key strength of a struct: <span class="ht">members can be different data types</span> — int, float, string, all in the same struct.</p>
+    <div class="code-wrap">
+      <div class="code-hd"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-title">Two ways to assign values</span></div>
+      <pre><span class="kw">struct</span> <span class="ty">Employee</span> {
+    <span class="ty">int</span>    id;
+    <span class="ty">string</span> name;
+    <span class="ty">float</span>  salary;
+};
+
+<span class="cm">// Way 1 — dot operator</span>
+<span class="ty">Employee</span> emp1;
+emp1.id     = <span class="num">101</span>;
+emp1.name   = <span class="st">"Sara"</span>;
+emp1.salary = <span class="num">8000</span>;
+
+<span class="cm">// Way 2 — curly braces {}</span>
+<span class="ty">Employee</span> emp2 = {<span class="num">102</span>, <span class="st">"Ali"</span>, <span class="num">9000</span>};</pre>
+    </div>
+    <div class="tip blue">
+      <span class="tip-icon">💡</span>
+      <div class="tip-text">When using <code>{}</code>, the values go in the <strong>same order</strong> as the members are declared in the struct. <code>id</code> first, then <code>name</code>, then <code>salary</code>.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 2.2 ARRAYS & NESTING -->
+<section class="topic" id="str-arrays">
+  <div class="topic-hd"><span class="topic-n">2.2</span><h3>Arrays & Nesting</h3></div>
+  <p class="topic-tagline">Structs support two useful features: storing an array as a member, and putting one struct inside another.</p>
+
+  <div class="explain">
+    <div class="explain-label">Array Inside Struct</div>
+    <h4>Store multiple values of the same kind in one member</h4>
+    <p>For example, a Student has marks for 3 subjects — instead of 3 separate variables, use one array member.</p>
+    <div class="code-wrap">
+      <div class="code-hd"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-title">Array as a struct member</span></div>
+      <pre><span class="kw">struct</span> <span class="ty">Student</span> {
+    <span class="ty">string</span> name;
+    <span class="ty">float</span>  marks[<span class="num">3</span>];    <span class="cm">// array member — 3 subject marks</span>
+};
+
+<span class="ty">Student</span> s;
+s.name      = <span class="st">"Ali"</span>;
+s.marks[<span class="num">0</span>]  = <span class="num">85</span>;     <span class="cm">// first subject</span>
+s.marks[<span class="num">1</span>]  = <span class="num">90</span>;     <span class="cm">// second subject</span>
+s.marks[<span class="num">2</span>]  = <span class="num">78</span>;     <span class="cm">// third subject</span></pre>
+    </div>
+  </div>
+
+  <div class="explain">
+    <div class="explain-label">Struct Inside Struct</div>
+    <h4>Use another struct as a member type</h4>
+    <p>For example, a Student has an Address — and Address itself has multiple fields.</p>
+    <div class="code-wrap">
+      <div class="code-hd"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-title">Nested structs</span></div>
+      <pre><span class="kw">struct</span> <span class="ty">Address</span> {
+    <span class="ty">string</span> city;
+    <span class="ty">string</span> street;
+};
+
+<span class="kw">struct</span> <span class="ty">Student</span> {
+    <span class="ty">string</span>  name;
+    <span class="ty">Address</span> address;   <span class="cm">// Address struct is a member</span>
+};
+
+<span class="ty">Student</span> s;
+s.name           = <span class="st">"Sara"</span>;
+s.address.city   = <span class="st">"Cairo"</span>;   <span class="cm">// two dots for nested access</span>
+s.address.street = <span class="st">"Nile St"</span>;</pre>
+    </div>
+    <div class="tip blue">
+      <span class="tip-icon">💡</span>
+      <div class="tip-text">To reach a member inside a nested struct, you use <strong>two dot operators</strong> — one to enter the outer struct, one to enter the inner struct: <code>s.address.city</code></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2.3 STRUCT OPERATIONS -->
+<section class="topic" id="str-ops">
+  <div class="topic-hd"><span class="topic-n">2.3</span><h3>Struct Operations</h3></div>
+  <p class="topic-tagline">Two things you can do with struct variables — and one thing you absolutely cannot.</p>
+
+  <div class="explain">
+    <div class="explain-label">Assignment — Works Fine</div>
+    <h4>Copying one struct into another</h4>
+    <p>You can assign one struct variable to another of the same type using <code>=</code>. This copies every member at once — no need to copy them one by one.</p>
+    <div class="code-wrap">
+      <div class="code-hd"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-title">Assignment</span></div>
+      <pre><span class="ty">Employee</span> emp1 = {<span class="num">101</span>, <span class="st">"Sara"</span>, <span class="num">8000</span>};
+<span class="ty">Employee</span> emp2;
+
+<span class="hl-line">emp2 = emp1;    <span class="cm">// copies all fields — emp2 is now an independent copy</span></span>
+
+emp2.name = <span class="st">"Ali"</span>;    <span class="cm">// changing emp2 does NOT affect emp1</span>
+cout &lt;&lt; emp1.name;    <span class="cm">// → Sara  (unchanged)</span></pre>
+    </div>
+  </div>
+
+  <div class="explain">
+    <div class="explain-label">Comparison — Read Carefully</div>
+    <h4>You cannot use == on structs</h4>
+    <p>C++ does not support comparing two struct variables directly with <code>==</code>. You must compare each member one by one.</p>
+    <div class="code-wrap">
+      <div class="code-hd"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-title">Right vs wrong</span></div>
+      <pre><span class="hl-line-r"><span class="cm">// ✘ DOES NOT WORK — compile error</span></span>
+<span class="hl-line-r"><span class="kw">if</span> (emp1 == emp2) { ... }</span>
+
+<span class="hl-line-g"><span class="cm">// ✔ CORRECT — compare member by member</span></span>
+<span class="hl-line-g"><span class="kw">if</span> (emp1.id     == emp2.id     &&</span>
+<span class="hl-line-g">    emp1.name   == emp2.name   &&</span>
+<span class="hl-line-g">    emp1.salary == emp2.salary) {</span>
+<span class="hl-line-g">    cout &lt;&lt; <span class="st">"Same employee"</span>;</span>
+<span class="hl-line-g">}</span></pre>
+    </div>
+    <div class="tip red">
+      <span class="tip-icon">⚠️</span>
+      <div class="tip-text"><strong>Common exam trap.</strong> You can copy a struct with <code>=</code> but you cannot compare two structs with <code>==</code>. Always compare member by member.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     PART 3 — FUNCTIONS
+══════════════════════════════════════════ -->
+
+<!-- 3.1 FUNCTION BASICS -->
+<section class="topic" id="fn-basics">
+  <div class="topic-hd"><span class="topic-n">3.1</span><h3>Function Basics</h3></div>
+  <p class="topic-tagline">A function is a named block of code that does one job. You write it once and can use it as many times as you need.</p>
+
+  <div class="explain">
+    <div class="explain-label">Structure of a Function</div>
+    <h4>The four parts</h4>
+    <div class="code-wrap">
+      <div class="code-hd"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-title">Anatomy of a function</span></div>
+      <pre><span class="cm">//  return type   name      parameters</span>
+       <span class="ty">int</span>         <span class="nm">add</span>   (<span class="ty">int</span> a, <span class="ty">int</span> b)
+{
+    <span class="kw">return</span> a + b;    <span class="cm">// result sent back to caller</span>
+}</pre>
+    </div>
+    <div class="side2">
+      <div class="s2-item">
+        <div class="s2-label">Return Type</div>
+        <div class="s2-val">The type of value the function sends back</div>
+        <div class="s2-sub">Use <code>void</code> if the function returns nothing</div>
+      </div>
+      <div class="s2-item">
+        <div class="s2-label">Function Name</div>
+        <div class="s2-val">How you call the function from other places</div>
+        <div class="s2-sub">Should describe what the function does</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3.2 GLOBAL vs LOCAL -->
+<section class="topic" id="fn-scope">
+  <div class="topic-hd"><span class="topic-n">3.2</span><h3>Global vs Local Variables</h3></div>
+  <p class="topic-tagline">Where a variable is declared decides where it can be used.</p>
+
+  <div class="explain">
+    <div class="explain-label">Scope</div>
+    <h4>Two types — different visibility</h4>
+    <table class="tbl">
+      <thead><tr><th>Type</th><th>Where declared</th><th>Where visible</th></tr></thead>
+      <tbody>
+        <tr><td><span style="color:var(--G);font-weight:700;">Global</span></td><td>Outside all functions</td><td>Anywhere in the program</td></tr>
+        <tr><td><span style="color:var(--A);font-weight:700;">Local</span></td><td>Inside a function or block</td><td>Only inside that function</td></tr>
+      </tbody>
+    </table>
+    <div class="code-wrap">
+      <div class="code-hd"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-title">Global vs local — what each can see</span></div>
+      <pre><span class="ty">int</span> total = <span class="num">0</span>;              <span class="cm">// global — visible everywhere</span>
+
+<span class="ty">void</span> <span class="nm">addScore</span>(<span class="ty">int</span> score) {
+    <span class="ty">int</span> bonus = <span class="num">10</span>;          <span class="cm">// local — only visible inside addScore()</span>
+    total += score + bonus;
+}
+
+<span class="ty">int</span> <span class="nm">main</span>() {
+    <span class="nm">addScore</span>(<span class="num">50</span>);
+    cout &lt;&lt; total;            <span class="cm">// → 60  (global, accessible here)</span>
+    <span class="hl-line-r">cout &lt;&lt; bonus;            <span class="cm">// ✘ ERROR — bonus is local to addScore()</span></span>
+}</pre>
+    </div>
+    <div class="tip red">
+      <span class="tip-icon">⚠️</span>
+      <div class="tip-text">A local variable <strong>only exists while that function is running</strong>. Once the function ends, the variable is gone. You cannot use it anywhere outside that function.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 3.3 PARAMETERS vs ARGUMENTS -->
+<section class="topic" id="fn-params">
+  <div class="topic-hd"><span class="topic-n">3.3</span><h3>Parameters vs Arguments</h3></div>
+  <p class="topic-tagline">Two words that look similar but mean different things — one is in the definition, one is in the call.</p>
+
+  <div class="explain">
+    <div class="explain-label">The Difference</div>
+    <h4>Easy to mix up — here is the clear distinction</h4>
+    <div class="side2">
+      <div class="s2-item">
+        <div class="s2-label">Parameter</div>
+        <div class="s2-val">The variable in the function definition</div>
+        <div class="s2-sub">It is a placeholder — it receives a value when the function is called</div>
+      </div>
+      <div class="s2-item">
+        <div class="s2-label">Argument</div>
+        <div class="s2-val">The actual value passed when calling the function</div>
+        <div class="s2-sub">It is the real data — what gets copied into the parameter</div>
+      </div>
+    </div>
+    <div class="code-wrap">
+      <div class="code-hd"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-title">Parameters vs arguments — labeled</span></div>
+      <pre><span class="cm">//         parameters ↓ ↓</span>
+<span class="ty">void</span> <span class="nm">printSalary</span>(<span class="ty">string</span> name, <span class="ty">float</span> salary) {
+    cout &lt;&lt; name &lt;&lt; <span class="st">": "</span> &lt;&lt; salary &lt;&lt; endl;
+}
+
+<span class="ty">int</span> <span class="nm">main</span>() {
+<span class="cm">//              arguments ↓         ↓</span>
+    <span class="nm">printSalary</span>(<span class="st">"Ahmed"</span>,      <span class="num">5000</span>);
+}</pre>
+    </div>
+    <div class="tip blue">
+      <span class="tip-icon">💡</span>
+      <div class="tip-text"><strong>Simple rule:</strong> if you see it in the function header between <code>( )</code> with a type — it's a <strong>parameter</strong>. If you see it in the function call — it's an <strong>argument</strong>.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 3.4 PASS BY VALUE & REFERENCE -->
+<section class="topic" id="fn-ref">
+  <div class="topic-hd"><span class="topic-n">3.4</span><h3>Pass by Value & Pass by Reference</h3></div>
+  <p class="topic-tagline">When you pass a variable to a function, C++ can either send a copy or send the original.</p>
+
+  <div class="explain">
+    <div class="explain-label">Pass by Value</div>
+    <h4>The function gets a copy — the original is safe</h4>
+    <p>This is the default in C++. The function works on its own copy of the value. <span class="ht">Changes inside the function do not affect the original variable.</span></p>
+    <div class="code-wrap">
+      <div class="code-hd"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-title">Pass by value</span></div>
+      <pre><span class="ty">void</span> <span class="nm">addBonus</span>(<span class="ty">float</span> salary) {   <span class="cm">// salary here is a copy</span>
+    salary += <span class="num">500</span>;
+    cout &lt;&lt; salary;              <span class="cm">// → 8500</span>
+}
+
+<span class="ty">int</span> <span class="nm">main</span>() {
+    <span class="ty">float</span> mySalary = <span class="num">8000</span>;
+    <span class="nm">addBonus</span>(mySalary);
+    cout &lt;&lt; mySalary;            <span class="cm">// → 8000  (unchanged)</span>
+}</pre>
+    </div>
+  </div>
+
+  <div class="explain">
+    <div class="explain-label">Pass by Reference</div>
+    <h4>The function works on the original — changes stick</h4>
+    <p>Add <span class="ht">&amp;</span> before the parameter name. Now the function receives the actual variable — not a copy. Any change inside the function changes the original.</p>
+    <div class="code-wrap">
+      <div class="code-hd"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-title">Pass by reference — note the &amp;</span></div>
+      <pre><span class="ty">void</span> <span class="nm">addBonus</span>(<span class="ty">float</span> &amp;salary) {  <span class="cm">// &amp; means: work on the original</span>
+    salary += <span class="num">500</span>;
+}
+
+<span class="ty">int</span> <span class="nm">main</span>() {
+    <span class="ty">float</span> mySalary = <span class="num">8000</span>;
+    <span class="nm">addBonus</span>(mySalary);
+    cout &lt;&lt; mySalary;            <span class="cm">// → 8500  (changed!)</span>
+}</pre>
+    </div>
+    <div class="side2">
+      <div class="s2-item">
+        <div class="s2-label">Pass by Value</div>
+        <div class="s2-val">Function gets a copy</div>
+        <div class="s2-sub">Original variable stays unchanged</div>
+      </div>
+      <div class="s2-item">
+        <div class="s2-label">Pass by Reference <span class="ht">&amp;</span></div>
+        <div class="s2-val">Function works on the original</div>
+        <div class="s2-sub">Changes made inside the function stay after it ends</div>
+      </div>
+    </div>
+    <div class="tip green">
+      <span class="tip-icon">✅</span>
+      <div class="tip-text">The only difference in the code is the <strong>&amp;</strong> symbol in the parameter. <code>float salary</code> = by value. <code>float &salary</code> = by reference. That one symbol changes everything.</div>
+    </div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<footer>
+  <div class="ft-l">ECE-203 · C++ Practice Guide</div>
+  <div class="ft-r">3 Parts · Classes · Structures · Functions</div>
+</footer>
+
+<script>
+function toggleTheme(){
+  const h=document.documentElement;
+  const dark=h.getAttribute('data-theme')==='dark';
+  h.setAttribute('data-theme',dark?'light':'dark');
+  document.getElementById('themeBtn').textContent=dark?'🌙 Dark':'☀ Light';
+}
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});
+},{threshold:.07});
+document.querySelectorAll('.topic').forEach(t=>obs.observe(t));
+
+const topics=document.querySelectorAll('.topic');
+const links=document.querySelectorAll('.sidebar a');
+const aobs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      links.forEach(l=>l.classList.remove('act'));
+      const a=document.querySelector(`.sidebar a[href="#${e.target.id}"]`);
+      if(a)a.classList.add('act');
+    }
+  });
+},{threshold:.35});
+topics.forEach(t=>aobs.observe(t));
+</script>
+</body>
+</html>
