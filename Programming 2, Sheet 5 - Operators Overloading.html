@@ -1,0 +1,1154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OOP with C++ — Practice Sheets</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-clike.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-cpp.min.js"></script>
+
+  <style>
+    :root{
+      --bg: #f6f7fb;
+      --panel: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #e2e8f0;
+      --shadow: 0 10px 30px rgba(2,6,23,.08);
+      --accent: #2563eb;
+      --accent2: #0ea5e9;
+      --chip: #eef2ff;
+      --chipText: #1e40af;
+      --success-bg: rgba(34,197,94,.12);
+      --success-border: rgba(34,197,94,.45);
+      --success-text: #15803d;
+      --theory-bg: rgba(37,99,235,.05);
+
+      --radius: 16px;
+      --radiusSm: 12px;
+      --maxw: 1100px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
+    }
+
+    [data-theme="dark"]{
+      --bg: #0b1220;
+      --panel: #0f1a2e;
+      --text: #e5e7eb;
+      --muted: #a5b4fc;
+      --border: rgba(148,163,184,.22);
+      --shadow: 0 12px 40px rgba(0,0,0,.35);
+      --accent: #60a5fa;
+      --accent2: #38bdf8;
+      --chip: rgba(96,165,250,.14);
+      --chipText: #bfdbfe;
+      --success-bg: rgba(34,197,94,.14);
+      --success-border: rgba(34,197,94,.38);
+      --success-text: #86efac;
+      --theory-bg: rgba(96,165,250,.08);
+    }
+
+    body{
+      margin: 0;
+      font-family: var(--sans);
+      background: radial-gradient(1200px 500px at 20% 0%, rgba(37,99,235,.10), transparent 60%),
+                  radial-gradient(1200px 500px at 80% 10%, rgba(14,165,233,.10), transparent 60%),
+                  var(--bg);
+      color: var(--text);
+    }
+
+    .wrap{
+      max-width: var(--maxw);
+      margin: 26px auto;
+      padding: 0 16px 40px;
+    }
+
+    header{
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .title{ display: flex; flex-direction: column; gap: 4px; }
+
+    h1{
+      margin: 0;
+      font-size: 26px;
+      letter-spacing: .2px;
+      font-weight: 800;
+    }
+
+    .subtitle{
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .panel{
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .toolbar{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 14px 14px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .leftTools{
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .pill{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.55);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 14px;
+      box-shadow: 0 8px 20px rgba(2,6,23,.06);
+      transition: .2s ease;
+    }
+
+    [data-theme="dark"] .pill{
+      background: rgba(15,26,46,.75);
+      box-shadow: 0 10px 22px rgba(0,0,0,.25);
+    }
+
+    .pill:hover{ border-color: rgba(37,99,235,.35); transform: translateY(-1px); }
+
+    .toggle{
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-size: 14px;
+      background: rgba(255,255,255,.55);
+      box-shadow: 0 8px 20px rgba(2,6,23,.06);
+    }
+
+    [data-theme="dark"] .toggle{
+      background: rgba(15,26,46,.75);
+      box-shadow: 0 10px 22px rgba(0,0,0,.25);
+    }
+
+    .switch{
+      width: 46px; height: 26px;
+      border-radius: 999px;
+      background: rgba(148,163,184,.25);
+      position: relative;
+      cursor: pointer;
+      border: 1px solid var(--border);
+    }
+
+    .knob{
+      width: 20px; height: 20px;
+      border-radius: 999px;
+      background: var(--panel);
+      position: absolute;
+      top: 2px; left: 2px;
+      transition: transform .2s ease;
+      box-shadow: 0 6px 16px rgba(0,0,0,.18);
+    }
+
+    .switch[data-on="true"]{ background: rgba(37,99,235,.35); }
+    .switch[data-on="true"] .knob{ transform: translateX(20px); }
+
+    .search{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px 12px;
+      min-width: 340px;
+      background: rgba(255,255,255,.55);
+      box-shadow: 0 8px 20px rgba(2,6,23,.06);
+    }
+
+    [data-theme="dark"] .search{
+      background: rgba(15,26,46,.75);
+      box-shadow: 0 10px 22px rgba(0,0,0,.25);
+    }
+
+    .search input{
+      border: none; outline: none;
+      background: transparent;
+      color: var(--text);
+      width: 100%; font-size: 14px;
+    }
+
+    .tabs{
+      display: flex;
+      gap: 10px;
+      padding: 16px 14px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      background: rgba(2,6,23,.01);
+    }
+
+    [data-theme="dark"] .tabs{ background: rgba(255,255,255,.02); }
+
+    .tab{
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.55);
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 8px 20px rgba(2,6,23,.06);
+      transition: .2s ease;
+    }
+
+    [data-theme="dark"] .tab{
+      background: rgba(15,26,46,.75);
+      box-shadow: 0 10px 22px rgba(0,0,0,.25);
+    }
+
+    .tab.active{
+      border-color: rgba(37,99,235,.55);
+      background: rgba(37,99,235,.10);
+    }
+
+    .badge{
+      font-size: 12px;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: var(--chip);
+      color: var(--chipText);
+      border: 1px solid rgba(37,99,235,.18);
+    }
+
+    .content{ padding: 16px; }
+
+    .q{
+      border: 1px solid var(--border);
+      border-radius: var(--radiusSm);
+      background: rgba(255,255,255,.55);
+      padding: 14px 14px;
+      margin-bottom: 12px;
+      box-shadow: 0 10px 26px rgba(2,6,23,.06);
+    }
+
+    [data-theme="dark"] .q{
+      background: rgba(15,26,46,.72);
+      box-shadow: 0 12px 28px rgba(0,0,0,.28);
+    }
+
+    .qHead{
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: baseline;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .qTitle{
+      margin: 0;
+      font-weight: 750;
+      font-size: 16px;
+      letter-spacing: .1px;
+      white-space: pre-line;
+      line-height: 1.65;
+    }
+
+    .qMeta{ font-size: 13px; color: var(--muted); flex-shrink: 0; }
+
+    .qBody{ color: var(--text); font-size: 15px; line-height: 1.6; }
+
+    .options{
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: var(--text);
+    }
+
+    .options li{
+      margin: 6px 0;
+      padding: 6px 8px;
+      border-radius: 10px;
+    }
+
+    .options li.correct{
+      border: 1px solid rgba(34,197,94,.45);
+      background: rgba(34,197,94,.12);
+    }
+
+    .answer .label, .output-answer .label{
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: #2563eb;
+      margin-bottom: 8px;
+    }
+
+    [data-theme="dark"] .answer .label,
+    [data-theme="dark"] .output-answer .label{ color: #93c5fd; }
+
+    .answer{
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: none;
+      border-left: 4px solid #2563eb;
+      background: linear-gradient(135deg, rgba(37,99,235,.07), rgba(14,165,233,.03));
+      display: none;
+      white-space: pre-line;
+      line-height: 1.7;
+      box-shadow: 0 4px 16px rgba(37,99,235,.08);
+    }
+
+    [data-theme="dark"] .answer{
+      background: linear-gradient(135deg, rgba(96,165,250,.09), rgba(56,189,248,.05));
+      border-left-color: #60a5fa;
+    }
+
+    .output-answer{
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: none;
+      border-left: 4px solid #0ea5e9;
+      background: #0d1117;
+      display: none;
+      font-family: var(--mono);
+      font-size: 14px;
+      color: #e2e8f0;
+      white-space: pre-line;
+      line-height: 1.85;
+      box-shadow: 0 8px 24px rgba(2,6,23,.22);
+    }
+
+    .output-answer .label{
+      font-family: var(--sans);
+      color: #38bdf8;
+    }
+
+    .error-answer{
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: none;
+      border-left: 4px solid #ef4444;
+      background: linear-gradient(135deg, rgba(239,68,68,.07), rgba(239,68,68,.02));
+      display: none;
+      white-space: pre-line;
+      line-height: 1.7;
+      box-shadow: 0 4px 16px rgba(239,68,68,.08);
+    }
+
+    .error-answer .label{
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: #dc2626;
+      margin-bottom: 8px;
+    }
+
+    [data-theme="dark"] .error-answer{
+      background: linear-gradient(135deg, rgba(239,68,68,.1), rgba(239,68,68,.04));
+    }
+
+    [data-theme="dark"] .error-answer .label{ color: #fca5a5; }
+
+    .tf-badge{
+      display: none;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 10px;
+      border: 1px solid;
+    }
+
+    .tf-true{
+      background: rgba(34,197,94,.12);
+      border-color: rgba(34,197,94,.45);
+      color: #15803d;
+    }
+
+    .tf-false{
+      background: rgba(239,68,68,.12);
+      border-color: rgba(239,68,68,.45);
+      color: #b91c1c;
+    }
+
+    .q.write-question{ padding-top: 16px; padding-bottom: 16px; }
+    .q.write-question .qTitle{ font-size: 17px; line-height: 1.75; }
+
+    .code-question-wrap{ display: block; }
+    .code-answer-wrap{ display: none; }
+
+    .code-question-wrap, .code-answer-wrap{
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(148,163,184,.14);
+      box-shadow: 0 12px 28px rgba(2,6,23,.16);
+      margin-top: 16px;
+    }
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: #161b22;
+      border-bottom: 1px solid rgba(148,163,184,.12);
+    }
+
+    .code-toolbar-dots{
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .code-toolbar-dots span{
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .code-toolbar-dots .dot-r{ background: #ff5f57; }
+    .code-toolbar-dots .dot-y{ background: #febc2e; }
+    .code-toolbar-dots .dot-g{ background: #28c840; }
+
+    .code-toolbar-lang{
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #6b7280;
+      font-family: var(--mono);
+    }
+
+    .copy-btn{
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.7);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 13px;
+      font-family: var(--sans);
+      transition: .2s ease;
+    }
+
+    [data-theme="dark"] .copy-btn{ background: rgba(15,26,46,.85); }
+    .copy-btn:hover{ border-color: rgba(37,99,235,.35); transform: translateY(-1px); }
+    .copy-btn.copied{
+      background: var(--success-bg);
+      border-color: var(--success-border);
+      color: var(--success-text);
+    }
+
+    pre[class*="language-"]{
+      border-radius: 0 0 14px 14px;
+      border: 1px solid rgba(148,163,184,.14);
+      border-top: none;
+      overflow: auto;
+      font-family: var(--mono);
+      font-size: 13.5px;
+      line-height: 1.8;
+      margin: 0;
+      padding: 18px 22px 20px;
+      background: #0d1117 !important;
+      box-shadow: 0 16px 34px rgba(2,6,23,.22);
+      counter-reset: line;
+    }
+
+    .code-question-wrap pre[class*="language-"],
+    .code-answer-wrap pre[class*="language-"]{
+      border-radius: 0;
+      border: none;
+      box-shadow: none;
+    }
+
+    .code-answer-wrap pre[class*="language-"],
+    .code-question-wrap pre[class*="language-"]{ margin-top: 0; }
+
+    code[class*="language-"]{ font-family: var(--mono); text-shadow: none !important; }
+
+    .token.comment,.token.prolog,.token.doctype,.token.cdata{ color: #6b7280; font-style: italic; }
+    .token.keyword{ color: #f472b6; }
+    .token.function{ color: #60a5fa; }
+    .token.string{ color: #fde047; }
+    .token.number{ color: #c4b5fd; }
+    .token.operator,.token.punctuation{ color: #e5e7eb; }
+    .token.boolean,.token.constant{ color: #fb7185; }
+    .token.class-name{ color: #67e8f9; }
+    .token.builtin,.token.type-name{ color: #5eead4; }
+    .token.variable{ color: #f8fafc; }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="title">
+        <h1>OOP with C++ — Practice Sheets</h1>
+        <p class="subtitle">Sheet 5 &bull; Operator Overloading</p>
+      </div>
+      <button class="pill" id="btnPrint" title="Print or Save as PDF">🖨️ Print / PDF</button>
+    </header>
+
+    <div class="panel">
+      <div class="toolbar">
+        <div class="leftTools">
+          <div class="toggle" title="Show or hide answers">
+            <span>Answers</span>
+            <div class="switch" id="answersSwitch" data-on="false" role="switch" aria-checked="false">
+              <div class="knob"></div>
+            </div>
+          </div>
+
+          <div class="toggle" title="Light or dark theme">
+            <span>Dark</span>
+            <div class="switch" id="themeSwitch" data-on="false" role="switch" aria-checked="false">
+              <div class="knob"></div>
+            </div>
+          </div>
+
+          <div class="search" title="Search inside current tab">
+            🔎 <input id="searchInput" placeholder="Search in this tab..." />
+          </div>
+        </div>
+      </div>
+
+      <div class="tabs" id="tabs"></div>
+      <div class="content" id="content"></div>
+    </div>
+  </div>
+
+  <script>
+    const data = {
+      meta: {
+        course: "OOP with C++",
+        sheetTitle: "Sheet 5"
+      },
+      sections: [
+        {
+          id: "mcq",
+          title: "MCQ",
+          items: [
+            {
+              q: "What does operator overloading allow you to do?",
+              options: [
+                "Create a new operator symbol that does not exist in C++",
+                "Define what an existing operator does when used with your own class",
+                "Remove operators from built-in types like int and double",
+                "Rename an operator to a different symbol"
+              ],
+              correctIndex: 1,
+              category: "Concept"
+            },
+            {
+              q: "Which of the following is the correct function name for overloading the + operator?",
+              options: [
+                "add()",
+                "plus()",
+                "operator+()",
+                "overload+()"
+              ],
+              correctIndex: 2,
+              category: "Syntax"
+            },
+            {
+              q: "When you write e1 + e2 and the + operator is overloaded inside the Employee class, what is e1's role?",
+              options: [
+                "e1 is passed as a parameter to the function",
+                "e1 is the caller — its data is available automatically inside the function",
+                "e1 is ignored and only e2 is used",
+                "e1 must be passed explicitly as the first argument"
+              ],
+              correctIndex: 1,
+              category: "Binary Operators"
+            },
+            {
+              q: "What return type should the == operator have when comparing two objects?",
+              options: [
+                "int",
+                "void",
+                "Employee",
+                "bool"
+              ],
+              correctIndex: 3,
+              category: "Comparison"
+            },
+            {
+              q: "What is the purpose of the dummy int parameter in operator++(int)?",
+              options: [
+                "It holds the value to add during increment",
+                "It tells C++ this is the postfix version, not the prefix version",
+                "It sets the increment step to 1",
+                "It is required by all operators that return a value"
+              ],
+              correctIndex: 1,
+              category: "Increment"
+            }
+          ]
+        },
+        {
+          id: "tf",
+          title: "True / False",
+          items: [
+            {
+              q: "You can create a completely new operator symbol in C++ using operator overloading.",
+              answer: "False"
+            },
+            {
+              q: "When an operator is defined inside the class, the left-side object is the caller and does not need to be passed as a parameter.",
+              answer: "True"
+            },
+            {
+              q: "The return type of an overloaded comparison operator like == must be bool.",
+              answer: "True"
+            },
+            {
+              q: "The const keyword at the end of an operator function means the function cannot modify the object's data.",
+              answer: "True"
+            },
+            {
+              q: "You can overload the ++ operator and use it like this: ++emp, where emp is an Employee object.",
+              answer: "True"
+            }
+          ]
+        },
+        {
+          id: "output",
+          title: "What is the Output?",
+          items: [
+            {
+              q: "What is the output of the following code?",
+              code: `#include <iostream>
+using namespace std;
+
+class Employee {
+public:
+    double salary;
+
+    Employee(double s) {
+        salary = s;
+    }
+
+    double operator+(Employee other) const {
+        return salary + other.salary;
+    }
+
+    bool operator==(Employee other) const {
+        return salary == other.salary;
+    }
+};
+
+int main() {
+    Employee e1(5000);
+    Employee e2(7000);
+    Employee e3(5000);
+
+    cout << e1 + e2 << endl;
+    cout << (e1 == e2) << endl;
+    cout << (e1 == e3) << endl;
+
+    return 0;
+}`,
+              answer: `12000
+0
+1`,
+              category: "Arithmetic + Comparison"
+            },
+            {
+              q: "What is the output of the following code?",
+              code: `#include <iostream>
+using namespace std;
+
+class Employee {
+public:
+    double salary;
+
+    Employee(double s) {
+        salary = s;
+    }
+
+    Employee operator++() {
+        salary = salary + 100;
+        return *this;
+    }
+
+    Employee operator++(int) {
+        Employee temp = *this;
+        salary = salary + 100;
+        return temp;
+    }
+};
+
+int main() {
+    Employee e1(5000);
+    Employee e2 = ++e1;
+    cout << e1.salary << endl;
+    cout << e2.salary << endl;
+
+    Employee e3(8000);
+    Employee e4 = e3++;
+    cout << e3.salary << endl;
+    cout << e4.salary << endl;
+
+    return 0;
+}`,
+              answer: `5100
+5100
+8100
+8000`,
+              category: "Prefix and Postfix"
+            }
+          ]
+        },
+        {
+          id: "error",
+          title: "What is the Error?",
+          items: [
+            {
+              q: "Find the error in this code and explain why it happens.",
+              code: `#include <iostream>
+using namespace std;
+
+class Employee {
+private:
+    double salary;
+public:
+    Employee(double s) {
+        salary = s;
+    }
+    double getSalary() const { return salary; }
+};
+
+int main() {
+    Employee e1(5000);
+    Employee e2(3000);
+
+    cout << e1 + e2 << endl;   // line A
+    cout << (e1 == e2) << endl; // line B
+
+    return 0;
+}`,
+              answer: `Errors on line A and line B.
+
+Line A: e1 + e2
+The + operator is not defined for the Employee class. C++ only knows how to use + with built-in types like int and double. For your own class, you must define what + means by overloading the operator.
+
+Line B: e1 == e2
+Same reason. The == operator has no meaning for Employee objects unless you overload it.
+
+Fix: Add operator overloading inside the class:
+  double operator+(Employee other) const { return salary + other.getSalary(); }
+  bool   operator==(Employee other) const { return salary == other.getSalary(); }`,
+              category: "Missing Overload"
+            },
+            {
+              q: "Find the error in this code and explain why it happens.",
+              code: `#include <iostream>
+using namespace std;
+
+class Employee {
+public:
+    double salary;
+
+    Employee(double s) {
+        salary = s;
+    }
+
+    double operator+(Employee other) const {
+        salary = salary + 100;    // line A
+        return salary + other.salary;
+    }
+};
+
+int main() {
+    Employee e1(5000);
+    Employee e2(3000);
+    cout << e1 + e2 << endl;
+    return 0;
+}`,
+              answer: `Error on line A: salary = salary + 100;
+
+The function is declared with const at the end, which means it cannot modify the object's data. Assigning a new value to salary inside a const function is not allowed.
+
+Fix: Either remove the salary = salary + 100 line, or remove const from the function signature if you intentionally want to change the salary.`,
+              category: "const"
+            }
+          ]
+        },
+        {
+          id: "write",
+          title: "Write the Code",
+          items: [
+            {
+              q: "Write a class called Employee with a private double member salary. Add a parameterized constructor. Then overload the + operator to return the sum of two employees' salaries. In main(), create two objects and print the result of adding them.",
+              category: "Arithmetic",
+              code: `#include <iostream>
+using namespace std;
+
+class Employee {
+private:
+    double salary;
+public:
+    Employee(double s) {
+        salary = s;
+    }
+
+    double getSalary() const { return salary; }
+
+    // Overload + : returns sum of both salaries
+    double operator+(Employee other) const {
+        return salary + other.salary;
+    }
+};
+
+int main() {
+    Employee e1(5000);
+    Employee e2(7000);
+
+    cout << "Combined salary: " << e1 + e2 << endl;
+    // Output: Combined salary: 12000
+
+    return 0;
+}`
+            },
+            {
+              q: "Write a class called Employee with a private int member id and a private double member salary. Add a parameterized constructor and getters. Then:\n- Overload == to return true if both employees have the same id\n- Overload < to return true if the left employee has a lower salary\nIn main(), create three objects and test both operators.",
+              category: "Comparison",
+              code: `#include <iostream>
+using namespace std;
+
+class Employee {
+private:
+    int    id;
+    double salary;
+public:
+    Employee(int i, double s) {
+        id     = i;
+        salary = s;
+    }
+
+    int    getId()     const { return id; }
+    double getSalary() const { return salary; }
+
+    // Overload == : same id means same employee
+    bool operator==(Employee other) const {
+        return id == other.getId();
+    }
+
+    // Overload < : compare by salary
+    bool operator<(Employee other) const {
+        return salary < other.getSalary();
+    }
+};
+
+int main() {
+    Employee e1(1, 5000);
+    Employee e2(2, 7000);
+    Employee e3(1, 6000);
+
+    cout << (e1 == e2) << endl;   // 0 — different id
+    cout << (e1 == e3) << endl;   // 1 — same id
+    cout << (e1 < e2)  << endl;   // 1 — 5000 < 7000
+
+    return 0;
+}`
+            },
+            {
+              q: "Write a class called Employee with a private double member salary. Add a parameterized constructor. Then overload both prefix ++ and postfix ++ so that each increments the salary by 500. In main(), show the difference between using ++e and e++.",
+              category: "Increment",
+              code: `#include <iostream>
+using namespace std;
+
+class Employee {
+private:
+    double salary;
+public:
+    Employee(double s) {
+        salary = s;
+    }
+
+    double getSalary() const { return salary; }
+
+    // Prefix ++e — increment first, return updated object
+    Employee operator++() {
+        salary = salary + 500;
+        return *this;
+    }
+
+    // Postfix e++ — save old state, increment, return old state
+    Employee operator++(int) {
+        Employee temp = *this;
+        salary = salary + 500;
+        return temp;
+    }
+};
+
+int main() {
+    Employee e1(5000);
+    Employee e2 = ++e1;
+    cout << e1.getSalary() << endl;   // 5500 — e1 changed
+    cout << e2.getSalary() << endl;   // 5500 — e2 gets the new value
+
+    Employee e3(8000);
+    Employee e4 = e3++;
+    cout << e3.getSalary() << endl;   // 8500 — e3 changed
+    cout << e4.getSalary() << endl;   // 8000 — e4 gets the old value
+
+    return 0;
+}`
+            },
+          ]
+        }
+      ]
+    };
+
+    const els = {
+      tabs:          document.getElementById("tabs"),
+      content:       document.getElementById("content"),
+      answersSwitch: document.getElementById("answersSwitch"),
+      themeSwitch:   document.getElementById("themeSwitch"),
+      searchInput:   document.getElementById("searchInput"),
+      btnPrint:      document.getElementById("btnPrint")
+    };
+
+    let state = {
+      activeSectionId: data.sections[0]?.id ?? null,
+      showAnswers: false,
+      theme: "light",
+      search: ""
+    };
+
+    function setSwitch(el, on){
+      el.dataset.on = String(on);
+      el.setAttribute("aria-checked", on ? "true" : "false");
+    }
+
+    function applyTheme(theme){
+      document.documentElement.setAttribute("data-theme", theme);
+      state.theme = theme;
+      localStorage.setItem("sheet_theme", theme);
+      setSwitch(els.themeSwitch, theme === "dark");
+      if (window.Prism) Prism.highlightAll();
+    }
+
+    function applyAnswers(on){
+      state.showAnswers = on;
+      localStorage.setItem("sheet_answers", on ? "1" : "0");
+      setSwitch(els.answersSwitch, on);
+
+      document.querySelectorAll(".answer").forEach(a => {
+        a.style.display = on ? "block" : "none";
+      });
+      document.querySelectorAll(".output-answer").forEach(a => {
+        a.style.display = on ? "block" : "none";
+      });
+      document.querySelectorAll(".error-answer").forEach(a => {
+        a.style.display = on ? "block" : "none";
+      });
+      document.querySelectorAll(".tf-badge").forEach(b => {
+        b.style.display = on ? "inline-block" : "none";
+      });
+      document.querySelectorAll(".code-answer-wrap").forEach(w => {
+        w.style.display = on ? "block" : "none";
+      });
+      document.querySelectorAll(".options .opt").forEach(li => {
+        if (on && li.classList.contains("is-correct")) li.classList.add("correct");
+        else li.classList.remove("correct");
+      });
+    }
+
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;");
+    }
+
+    function getActiveSection(){
+      return data.sections.find(s => s.id === state.activeSectionId) ?? data.sections[0];
+    }
+
+    function renderTabs(){
+      els.tabs.innerHTML = "";
+      data.sections.forEach(sec => {
+        const btn = document.createElement("button");
+        btn.className = "tab" + (sec.id === state.activeSectionId ? " active" : "");
+        const count = sec.items?.length ?? 0;
+        btn.innerHTML = `${sec.title} <span class="badge">${count}</span>`;
+        btn.addEventListener("click", () => {
+          state.activeSectionId = sec.id;
+          state.search = "";
+          els.searchInput.value = "";
+          renderTabs();
+          renderContent();
+        });
+        els.tabs.appendChild(btn);
+      });
+    }
+
+    function renderContent(){
+      const sec = getActiveSection();
+      const qItems = sec.items ?? [];
+
+      const filtered = qItems.filter(item => {
+        if (!state.search.trim()) return true;
+        const hay = JSON.stringify(item).toLowerCase();
+        return hay.includes(state.search.trim().toLowerCase());
+      });
+
+      els.content.innerHTML = filtered.map((item, idx) => {
+        const num = idx + 1;
+        const hasOptions   = Array.isArray(item.options) && item.options.length;
+        const hasCode      = !!item.code;
+        const hasTextAns   = typeof item.answer === "string" && item.answer.trim() !== "";
+        const hasTfAnswer  = sec.id === "tf" && hasTextAns;
+        const isOutput     = sec.id === "output";
+        const isError      = sec.id === "error";
+        const isWrite      = sec.id === "write";
+
+        const categoryLabel = item.category
+          ? `${escapeHtml(sec.title)} &bull; ${escapeHtml(item.category)}`
+          : escapeHtml(sec.title);
+
+        let qClass = "q";
+        if (isWrite) qClass += " write-question";
+
+        return `
+          <div class="${qClass}">
+            <div class="qHead">
+              <p class="qTitle">${num}) ${escapeHtml(item.q)}</p>
+              <span class="qMeta">${categoryLabel}</span>
+            </div>
+
+            <div class="qBody">
+              ${hasOptions ? `
+                <ol class="options" type="A">
+                  ${item.options.map((opt, i) => {
+                    const isCorrect = typeof item.correctIndex === "number" && i === item.correctIndex;
+                    return `<li class="opt ${isCorrect ? "is-correct" : ""}">${escapeHtml(opt)}</li>`;
+                  }).join("")}
+                </ol>
+              ` : ""}
+
+              ${hasTfAnswer ? `
+                <div class="tf-badge ${item.answer === "True" ? "tf-true" : "tf-false"}">${escapeHtml(item.answer)}</div>
+              ` : ""}
+
+              ${isOutput && hasTextAns ? `
+                <div class="output-answer">
+                  <div class="label">▶ Output</div>
+                  <div>${escapeHtml(item.answer)}</div>
+                </div>
+              ` : ""}
+
+              ${isError && hasTextAns ? `
+                <div class="error-answer">
+                  <div class="label">⚠ Error &amp; Fix</div>
+                  <div>${escapeHtml(item.answer)}</div>
+                </div>
+              ` : ""}
+
+              ${hasCode ? `
+                <div class="${isWrite ? "code-answer-wrap" : "code-question-wrap"}">
+                  <div class="code-toolbar">
+                    <div class="code-toolbar-dots">
+                      <span class="dot-r"></span>
+                      <span class="dot-y"></span>
+                      <span class="dot-g"></span>
+                    </div>
+                    <span class="code-toolbar-lang">C++</span>
+                    <button class="copy-btn" type="button" data-code="${encodeURIComponent(item.code)}">📋 Copy</button>
+                  </div>
+                  <pre class="language-cpp"><code class="language-cpp">${escapeHtml(item.code)}</code></pre>
+                </div>
+              ` : ""}
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      bindCopyButtons();
+      applyAnswers(state.showAnswers);
+      if (window.Prism) Prism.highlightAll();
+    }
+
+    function bindCopyButtons(){
+      document.querySelectorAll(".copy-btn").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          const code = decodeURIComponent(btn.dataset.code || "");
+          try {
+            await navigator.clipboard.writeText(code);
+          } catch(e) {
+            const ta = document.createElement("textarea");
+            ta.value = code;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand("copy");
+            document.body.removeChild(ta);
+          }
+          const old = btn.innerHTML;
+          btn.innerHTML = "✅ Copied";
+          btn.classList.add("copied");
+          setTimeout(() => { btn.innerHTML = old; btn.classList.remove("copied"); }, 1400);
+        });
+      });
+    }
+
+    els.searchInput.addEventListener("input", e => {
+      state.search = e.target.value;
+      renderContent();
+    });
+
+    els.btnPrint.addEventListener("click", () => window.print());
+    els.answersSwitch.addEventListener("click", () => applyAnswers(!state.showAnswers));
+    els.themeSwitch.addEventListener("click", () => applyTheme(state.theme === "dark" ? "light" : "dark"));
+
+    (function init(){
+      renderTabs();
+      renderContent();
+
+      const savedTheme = localStorage.getItem("sheet_theme");
+      if (savedTheme === "dark" || savedTheme === "light") {
+        applyTheme(savedTheme);
+      } else {
+        const systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        applyTheme(systemDark ? "dark" : "light");
+      }
+
+      applyAnswers(localStorage.getItem("sheet_answers") === "1");
+    })();
+  </script>
+</body>
+</html>

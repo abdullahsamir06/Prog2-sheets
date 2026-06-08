@@ -1,0 +1,734 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OOP with C++ — Practice Sheets</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-clike.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-cpp.min.js"></script>
+
+  <style>
+    :root{
+      --bg:#f6f7fb;--panel:#ffffff;--text:#0f172a;--muted:#475569;
+      --border:#e2e8f0;--shadow:0 10px 30px rgba(2,6,23,.08);
+      --accent:#2563eb;--accent2:#0ea5e9;--chip:#eef2ff;--chipText:#1e40af;
+      --success-bg:rgba(34,197,94,.12);--success-border:rgba(34,197,94,.45);--success-text:#15803d;
+      --radius:16px;--radiusSm:12px;--maxw:1100px;
+      --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+      --sans:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,"Noto Sans","Apple Color Emoji","Segoe UI Emoji";
+    }
+    [data-theme="dark"]{
+      --bg:#0b1220;--panel:#0f1a2e;--text:#e5e7eb;--muted:#a5b4fc;
+      --border:rgba(148,163,184,.22);--shadow:0 12px 40px rgba(0,0,0,.35);
+      --accent:#60a5fa;--accent2:#38bdf8;--chip:rgba(96,165,250,.14);--chipText:#bfdbfe;
+      --success-bg:rgba(34,197,94,.14);--success-border:rgba(34,197,94,.38);--success-text:#86efac;
+    }
+    body{margin:0;font-family:var(--sans);background:radial-gradient(1200px 500px at 20% 0%,rgba(37,99,235,.10),transparent 60%),radial-gradient(1200px 500px at 80% 10%,rgba(14,165,233,.10),transparent 60%),var(--bg);color:var(--text);}
+    .wrap{max-width:var(--maxw);margin:26px auto;padding:0 16px 40px;}
+    header{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:14px;}
+    .title{display:flex;flex-direction:column;gap:4px;}
+    h1{margin:0;font-size:26px;letter-spacing:.2px;font-weight:800;}
+    .subtitle{margin:0;color:var(--muted);font-size:13px;}
+    .panel{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
+    .toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px;border-bottom:1px solid var(--border);flex-wrap:wrap;}
+    .leftTools{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.55);color:var(--text);cursor:pointer;font-size:14px;box-shadow:0 8px 20px rgba(2,6,23,.06);transition:.2s ease;}
+    [data-theme="dark"] .pill{background:rgba(15,26,46,.75);}
+    .pill:hover{border-color:rgba(37,99,235,.35);transform:translateY(-1px);}
+    .toggle{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--border);border-radius:999px;padding:10px 12px;font-size:14px;background:rgba(255,255,255,.55);box-shadow:0 8px 20px rgba(2,6,23,.06);}
+    [data-theme="dark"] .toggle{background:rgba(15,26,46,.75);}
+    .switch{width:46px;height:26px;border-radius:999px;background:rgba(148,163,184,.25);position:relative;cursor:pointer;border:1px solid var(--border);}
+    .knob{width:20px;height:20px;border-radius:999px;background:var(--panel);position:absolute;top:2px;left:2px;transition:transform .2s ease;box-shadow:0 6px 16px rgba(0,0,0,.18);}
+    .switch[data-on="true"]{background:rgba(37,99,235,.35);}
+    .switch[data-on="true"] .knob{transform:translateX(20px);}
+    .search{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border);border-radius:14px;padding:10px 12px;min-width:340px;background:rgba(255,255,255,.55);box-shadow:0 8px 20px rgba(2,6,23,.06);}
+    [data-theme="dark"] .search{background:rgba(15,26,46,.75);}
+    .search input{border:none;outline:none;background:transparent;color:var(--text);width:100%;font-size:14px;}
+    .tabs{display:flex;gap:10px;padding:16px 14px;border-bottom:1px solid var(--border);flex-wrap:wrap;background:rgba(2,6,23,.01);}
+    [data-theme="dark"] .tabs{background:rgba(255,255,255,.02);}
+    .tab{border:1px solid var(--border);background:rgba(255,255,255,.55);color:var(--text);padding:10px 14px;border-radius:999px;cursor:pointer;font-size:14px;display:inline-flex;align-items:center;gap:10px;box-shadow:0 8px 20px rgba(2,6,23,.06);transition:.2s ease;}
+    [data-theme="dark"] .tab{background:rgba(15,26,46,.75);}
+    .tab.active{border-color:rgba(37,99,235,.55);background:rgba(37,99,235,.10);}
+    .badge{font-size:12px;padding:2px 10px;border-radius:999px;background:var(--chip);color:var(--chipText);border:1px solid rgba(37,99,235,.18);}
+    .content{padding:16px;}
+    .q{border:1px solid var(--border);border-radius:var(--radiusSm);background:rgba(255,255,255,.55);padding:14px;margin-bottom:12px;box-shadow:0 10px 26px rgba(2,6,23,.06);}
+    [data-theme="dark"] .q{background:rgba(15,26,46,.72);}
+    .qHead{display:flex;justify-content:space-between;gap:10px;align-items:baseline;margin-bottom:10px;flex-wrap:wrap;}
+    .qTitle{margin:0;font-weight:750;font-size:16px;letter-spacing:.1px;white-space:pre-line;line-height:1.65;}
+    .qMeta{font-size:13px;color:var(--muted);flex-shrink:0;}
+    .qBody{color:var(--text);font-size:15px;line-height:1.6;}
+    .options{margin:10px 0 0;padding-left:18px;color:var(--text);}
+    .options li{margin:6px 0;padding:6px 8px;border-radius:10px;}
+    .options li.correct{border:1px solid rgba(34,197,94,.45);background:rgba(34,197,94,.12);}
+    .answer{margin-top:12px;padding:14px 16px;border-radius:14px;border:none;border-left:4px solid #2563eb;background:linear-gradient(135deg,rgba(37,99,235,.07),rgba(14,165,233,.03));display:none;white-space:pre-line;line-height:1.7;box-shadow:0 4px 16px rgba(37,99,235,.08);}
+    [data-theme="dark"] .answer{background:linear-gradient(135deg,rgba(96,165,250,.09),rgba(56,189,248,.05));border-left-color:#60a5fa;}
+    .answer .label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#2563eb;margin-bottom:8px;}
+    [data-theme="dark"] .answer .label{color:#93c5fd;}
+    .output-answer{margin-top:14px;padding:14px 16px;border-radius:14px;border:none;border-left:4px solid #0ea5e9;background:#0d1117;display:none;font-family:var(--mono);font-size:14px;color:#e2e8f0;white-space:pre-line;line-height:1.85;box-shadow:0 8px 24px rgba(2,6,23,.22);}
+    .output-answer .label{font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#38bdf8;margin-bottom:8px;}
+    .error-answer{margin-top:14px;padding:14px 16px;border-radius:14px;border:none;border-left:4px solid #ef4444;background:linear-gradient(135deg,rgba(239,68,68,.07),rgba(239,68,68,.02));display:none;white-space:pre-line;line-height:1.7;box-shadow:0 4px 16px rgba(239,68,68,.08);}
+    [data-theme="dark"] .error-answer{background:linear-gradient(135deg,rgba(239,68,68,.1),rgba(239,68,68,.04));}
+    .error-answer .label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#dc2626;margin-bottom:8px;}
+    [data-theme="dark"] .error-answer .label{color:#fca5a5;}
+    .tf-badge{display:none;padding:6px 14px;border-radius:999px;font-size:13px;font-weight:600;margin-top:10px;border:1px solid;}
+    .tf-true{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.45);color:#15803d;}
+    .tf-false{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.45);color:#b91c1c;}
+    .q.write-question{padding-top:16px;padding-bottom:16px;}
+    .code-question-wrap{display:block;}
+    .code-answer-wrap{display:none;}
+    .code-question-wrap,.code-answer-wrap{border-radius:14px;overflow:hidden;border:1px solid rgba(148,163,184,.14);box-shadow:0 12px 28px rgba(2,6,23,.16);margin-top:16px;}
+    .code-toolbar{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 16px;background:#161b22;border-bottom:1px solid rgba(148,163,184,.12);}
+    .code-toolbar-dots{display:flex;gap:6px;align-items:center;}
+    .code-toolbar-dots span{width:12px;height:12px;border-radius:50%;display:inline-block;}
+    .dot-r{background:#ff5f57;}.dot-y{background:#febc2e;}.dot-g{background:#28c840;}
+    .code-toolbar-lang{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#6b7280;font-family:var(--mono);}
+    .copy-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:10px;border:1px solid var(--border);background:rgba(255,255,255,.7);color:var(--text);cursor:pointer;font-size:13px;font-family:var(--sans);transition:.2s ease;}
+    [data-theme="dark"] .copy-btn{background:rgba(15,26,46,.85);}
+    .copy-btn:hover{border-color:rgba(37,99,235,.35);transform:translateY(-1px);}
+    .copy-btn.copied{background:var(--success-bg);border-color:var(--success-border);color:var(--success-text);}
+    pre[class*="language-"]{border-radius:0 0 14px 14px;border:1px solid rgba(148,163,184,.14);border-top:none;overflow:auto;font-family:var(--mono);font-size:13.5px;line-height:1.8;margin:0;padding:18px 22px 20px;background:#0d1117 !important;}
+    .code-question-wrap pre[class*="language-"],.code-answer-wrap pre[class*="language-"]{border-radius:0;border:none;box-shadow:none;margin-top:0;}
+    code[class*="language-"]{font-family:var(--mono);text-shadow:none !important;}
+    .token.comment,.token.prolog,.token.doctype,.token.cdata{color:#6b7280;font-style:italic;}
+    .token.keyword{color:#f472b6;}.token.function{color:#60a5fa;}.token.string{color:#fde047;}
+    .token.number{color:#c4b5fd;}.token.operator,.token.punctuation{color:#e5e7eb;}
+    .token.boolean,.token.constant{color:#fb7185;}.token.class-name{color:#67e8f9;}
+    .token.builtin,.token.type-name{color:#5eead4;}.token.variable{color:#f8fafc;}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="title">
+        <h1>OOP with C++ — Practice Sheets</h1>
+        <p class="subtitle">Sheet 7 &bull; Virtual Functions, Abstract Classes &amp; Exception Handling</p>
+      </div>
+      <button class="pill" id="btnPrint">🖨️ Print / PDF</button>
+    </header>
+    <div class="panel">
+      <div class="toolbar">
+        <div class="leftTools">
+          <div class="toggle">
+            <span>Answers</span>
+            <div class="switch" id="answersSwitch" data-on="false" role="switch" aria-checked="false"><div class="knob"></div></div>
+          </div>
+          <div class="toggle">
+            <span>Dark</span>
+            <div class="switch" id="themeSwitch" data-on="false" role="switch" aria-checked="false"><div class="knob"></div></div>
+          </div>
+          <div class="search">🔎 <input id="searchInput" placeholder="Search in this tab..." /></div>
+        </div>
+      </div>
+      <div class="tabs" id="tabs"></div>
+      <div class="content" id="content"></div>
+    </div>
+  </div>
+
+  <script>
+  const data = {
+    meta: { course: "OOP with C++", sheetTitle: "Sheet 7" },
+    sections: [
+
+      // ── MCQ ────────────────────────────────────────────────────────
+      {
+        id: "mcq", title: "MCQ",
+        items: [
+          {
+            q: "What is polymorphism in C++?",
+            options: [
+              "The ability to hide data inside a class so it cannot be accessed from outside",
+              "The ability of a function or object to take on multiple forms",
+              "The ability to create a new class from scratch with no base class",
+              "The ability to use the same variable name in different files"
+            ],
+            correctIndex: 1,
+            category: "Polymorphism"
+          },
+          {
+            q: "What are the two types of polymorphism in C++?",
+            options: [
+              "Compile-time polymorphism (function overloading) and runtime polymorphism (function overriding)",
+              "Public polymorphism and private polymorphism",
+              "Class polymorphism and object polymorphism",
+              "Input polymorphism and output polymorphism"
+            ],
+            correctIndex: 0,
+            category: "Types of Polymorphism"
+          },
+          {
+            q: "A Shape pointer points to a Circle object and calls draw(). Shape declares draw() as virtual. Which version runs?",
+            options: [
+              "Shape's draw() — because Shape is the parent class",
+              "Circle's draw() — because virtual makes the correct version run",
+              "Both versions run at the same time",
+              "It causes a compile error"
+            ],
+            correctIndex: 1,
+            category: "Virtual Functions"
+          },
+          {
+            q: "What does virtual int area() = 0; mean inside a class?",
+            options: [
+              "The function area() always returns zero",
+              "The function area() is optional — derived classes may or may not define it",
+              "The function area() has no body in this class and every derived class must define it",
+              "The function area() can only be called from main()"
+            ],
+            correctIndex: 2,
+            category: "Pure Virtual Functions"
+          },
+          {
+            q: "A class has at least one pure virtual function. What does this mean?",
+            options: [
+              "You can still create objects from it as long as you never call the pure virtual function",
+              "This class becomes abstract — you cannot create objects from it directly",
+              "This class can no longer be used as a base class",
+              "All functions in the class automatically become pure virtual"
+            ],
+            correctIndex: 1,
+            category: "Abstract Classes"
+          },
+          {
+            q: "A friend function is declared inside a class. Which of the following describes it correctly?",
+            options: [
+              "It is a regular member function of the class",
+              "It is defined outside the class but is allowed to access private and protected members of the class",
+              "It can only read public members of the class",
+              "It is inherited by any class that inherits from this class"
+            ],
+            correctIndex: 1,
+            category: "Friend Function"
+          },
+          {
+            q: "Class A declares: friend class B; inside it. What does this allow?",
+            options: [
+              "Class A can access the private members of class B",
+              "Class B can access the private and protected members of class A",
+              "Both class A and class B can access each other's private members",
+              "Class B becomes a derived class of class A"
+            ],
+            correctIndex: 1,
+            category: "Friend Class"
+          }
+        ]
+      },
+
+      // ── T/F ────────────────────────────────────────────────────────
+      {
+        id: "tf", title: "True / False",
+        items: [
+          {
+            q: "A class that has a pure virtual function can be used to create objects directly.",
+            answer: "False"
+          },
+          {
+            q: "If a derived class does not define the pure virtual function from its base class, it also becomes abstract and cannot be instantiated.",
+            answer: "True"
+          },
+          {
+            q: "A friend function is a member of the class that declares it.",
+            answer: "False"
+          },
+          {
+            q: "Class A declares friend class B. This means B can access the private members of A, and A can also access the private members of B.",
+            answer: "False"
+          },
+          {
+            q: "If no exception is thrown inside a try block, the catch block is skipped and the program continues normally.",
+            answer: "True"
+          }
+        ]
+      },
+
+      // ── OUTPUT ─────────────────────────────────────────────────────
+      {
+        id: "output", title: "What is the Output?",
+        items: [
+          {
+            q: "What is the output of the following code?",
+            code: `#include <iostream>
+using namespace std;
+
+class Shape {
+public:
+    virtual void draw() {
+        cout << "Drawing Shape" << endl;
+    }
+};
+
+class Circle : public Shape {
+public:
+    void draw() {
+        cout << "Drawing Circle" << endl;
+    }
+};
+
+int main() {
+    Shape s;
+    Circle c;
+    s.draw();
+    c.draw();
+    return 0;
+}`,
+            answer: `Drawing Shape
+Drawing Circle`,
+            category: "Virtual Functions"
+          },
+          {
+            q: "What is the output of the following code?",
+            code: `#include <iostream>
+using namespace std;
+
+class Account {
+private:
+    string owner;
+    double balance;
+public:
+    Account(string o, double b) {
+        owner   = o;
+        balance = b;
+    }
+    friend class Bank;
+};
+
+class Bank {
+public:
+    void show(Account a) {
+        cout << a.owner   << endl;
+        cout << a.balance << endl;
+    }
+};
+
+int main() {
+    Account acc("Ahmed", 5000.0);
+    Bank b;
+    b.show(acc);
+    return 0;
+}`,
+            answer: `Ahmed
+5000`,
+            category: "Friend Class"
+          },
+          {
+            q: "What is the output of the following code?",
+            code: `#include <iostream>
+using namespace std;
+
+int main() {
+    int x = 10, y = 0;
+    try {
+        if (y == 0)
+            throw "Division by zero";
+        else
+            cout << x / y << endl;
+    }
+    catch (const char* msg) {
+        cout << msg << endl;
+    }
+    cout << "Program continued" << endl;
+    return 0;
+}`,
+            answer: `Division by zero
+Program continued`,
+            category: "Exception Handling"
+          },
+          {
+            q: "What is the output of the following code?",
+            code: `#include <iostream>
+using namespace std;
+
+int main() {
+    try {
+        int age = 20;
+        if (age < 18)
+            throw age;
+        cout << "Access granted" << endl;
+    }
+    catch (int n) {
+        cout << "Access denied. Age: " << n << endl;
+    }
+    return 0;
+}`,
+            answer: `Access granted`,
+            category: "No Exception Thrown"
+          },
+          {
+            q: "What is the output of the following code?",
+            code: `#include <iostream>
+using namespace std;
+
+int main() {
+    int x = 10, y = 0;
+    try {
+        if (y == 0)
+            throw "Integer division by zero";
+        else
+            cout << x / y << endl;
+    }
+    catch (...) {
+        cout << "An exception caught" << endl;
+    }
+    cout << "Program continued" << endl;
+    return 0;
+}`,
+            answer: `An exception caught
+Program continued`,
+            category: "catch(...)"
+          }
+        ]
+      },
+
+      // ── ERROR ──────────────────────────────────────────────────────
+      {
+        id: "error", title: "What is the Error?",
+        items: [
+          {
+            q: "Find the error in this code and explain why it happens.",
+            code: `#include <iostream>
+using namespace std;
+
+class Shape {
+public:
+    virtual int area() = 0;
+};
+
+class Rectangle : public Shape {
+private:
+    int width, height;
+public:
+    Rectangle(int w, int h) { width = w; height = h; }
+    int area() { return width * height; }
+};
+
+int main() {
+    Shape s;
+    Rectangle r(4, 5);
+    cout << r.area() << endl;
+    return 0;
+}`,
+            answer: `Error: Shape s;\n\nShape is an abstract class because it has a pure virtual function ( area() = 0 ).\nYou cannot create objects from an abstract class.\n\nFix: Remove Shape s; — it is not needed.\nRectangle r(4, 5) already works fine on its own.`,
+            category: "Abstract Class"
+          },
+          {
+            q: "Find the error in this code and explain why it happens.",
+            code: `#include <iostream>
+using namespace std;
+
+int main() {
+    int x = 10, y = 0;
+    try {
+        if (y == 0)
+            throw "Division by zero";
+        else
+            cout << x / y << endl;
+    }
+    catch (int n) {
+        cout << "Caught: " << n << endl;
+    }
+    return 0;
+}`,
+            answer: `Error: the thrown type and the caught type do not match.
+
+The code throws a text (const char*):
+    throw "Division by zero";
+
+But catch expects a number (int):
+    catch (int n)
+
+Since the types do not match, the exception is not caught and the program crashes.
+
+Fix: Change catch to match what was thrown:
+    catch (const char* msg) {
+        cout << msg << endl;
+    }`,
+            category: "Exception Type Mismatch"
+          }
+        ]
+      },
+
+      // ── WRITE ──────────────────────────────────────────────────────
+      {
+        id: "write", title: "Write the Code",
+        items: [
+          {
+            q: `Shape class (abstract base):
+• protected: width and height (int)
+• parameterized constructor
+• pure virtual function: area()
+
+Rectangle (derived from Shape):
+• override area() — return width * height
+
+In main():
+• create Rectangle(6, 4) and print area()`,
+            category: "Shape & Rectangle",
+            code: `#include <iostream>
+using namespace std;
+
+class Shape {
+protected:
+    int width, height;
+public:
+    Shape(int w, int h) {
+        width  = w;
+        height = h;
+    }
+    virtual int area() = 0;
+};
+
+class Rectangle : public Shape {
+public:
+    Rectangle(int w, int h) : Shape(w, h) {}
+
+    int area() {
+        return width * height;
+    }
+};
+
+int main() {
+    Rectangle r(6, 4);
+    cout << "Rectangle area: " << r.area() << endl;
+    return 0;
+}`
+          },
+          {
+            q: `Employee class:
+• private: name (string), salary (double)
+• parameterized constructor
+• friend function printEmployee(Employee e) — defined outside the class, prints name and salary
+
+In main():
+• create Employee("Sara", 7500.0) and call printEmployee`,
+            category: "Friend Function",
+            code: `#include <iostream>
+using namespace std;
+
+class Employee {
+private:
+    string name;
+    double salary;
+public:
+    Employee(string n, double s) {
+        name   = n;
+        salary = s;
+    }
+    friend void printEmployee(Employee e);
+};
+
+void printEmployee(Employee e) {
+    cout << "Name:   " << e.name   << endl;
+    cout << "Salary: " << e.salary << endl;
+}
+
+int main() {
+    Employee emp("Sara", 7500.0);
+    printEmployee(emp);
+    return 0;
+}`
+          },
+          {
+            q: `Write a program with int x = 10 and int y = 0:
+• try block: if y == 0, throw "Division by zero", else print x / y
+• catch block: catch the text and print it
+• after try/catch, print "Program finished"`,
+            category: "Exception Handling",
+            code: `#include <iostream>
+using namespace std;
+
+int main() {
+    int x = 10, y = 0;
+
+    try {
+        if (y == 0)
+            throw "Division by zero";
+        else
+            cout << x / y << endl;
+    }
+    catch (const char* msg) {
+        cout << msg << endl;
+    }
+
+    cout << "Program finished" << endl;
+    return 0;
+}`
+          },
+          {
+            q: `Box class:
+• private: side (int)
+• parameterized constructor that sets side
+• declare friend class Printer inside Box
+
+Printer class:
+• function printBox(Box b) — defined inside Printer — that prints the side
+
+In main():
+• create Box(7) and a Printer object, then call printBox`,
+            category: "Friend Class",
+            code: `#include <iostream>
+using namespace std;
+
+class Box {
+private:
+    int side;
+public:
+    Box(int s) {
+        side = s;
+    }
+    friend class Printer;
+};
+
+class Printer {
+public:
+    void printBox(Box b) {
+        cout << "Side: " << b.side << endl;
+    }
+};
+
+int main() {
+    Box b(7);
+    Printer p;
+    p.printBox(b);
+    return 0;
+}`
+          }
+        ]
+      }
+
+    ]
+  };
+
+  // ── Engine ──────────────────────────────────────────────────────────
+  const els = {
+    tabs: document.getElementById("tabs"),
+    content: document.getElementById("content"),
+    answersSwitch: document.getElementById("answersSwitch"),
+    themeSwitch: document.getElementById("themeSwitch"),
+    searchInput: document.getElementById("searchInput"),
+    btnPrint: document.getElementById("btnPrint")
+  };
+
+  let state = { activeSectionId: data.sections[0]?.id ?? null, showAnswers: false, theme: "light", search: "" };
+
+  function setSwitch(el, on){ el.dataset.on = String(on); el.setAttribute("aria-checked", on ? "true" : "false"); }
+
+  function applyTheme(theme){
+    document.documentElement.setAttribute("data-theme", theme);
+    state.theme = theme;
+    localStorage.setItem("sheet_theme", theme);
+    setSwitch(els.themeSwitch, theme === "dark");
+    if(window.Prism) setTimeout(() => Prism.highlightAll(), 0);
+  }
+
+  function applyAnswers(on){
+    state.showAnswers = on;
+    localStorage.setItem("sheet_answers", on ? "1" : "0");
+    setSwitch(els.answersSwitch, on);
+    document.querySelectorAll(".answer").forEach(a => { a.style.display = on ? "block" : "none"; });
+    document.querySelectorAll(".output-answer").forEach(a => { a.style.display = on ? "block" : "none"; });
+    document.querySelectorAll(".error-answer").forEach(a => { a.style.display = on ? "block" : "none"; });
+    document.querySelectorAll(".tf-badge").forEach(b => { b.style.display = on ? "inline-block" : "none"; });
+    document.querySelectorAll(".code-answer-wrap").forEach(w => { w.style.display = on ? "block" : "none"; });
+    document.querySelectorAll(".options .opt").forEach(li => {
+      if(on && li.classList.contains("is-correct")) li.classList.add("correct");
+      else li.classList.remove("correct");
+    });
+  }
+
+  function esc(str){ return String(str).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;"); }
+  function getActive(){ return data.sections.find(s => s.id === state.activeSectionId) ?? data.sections[0]; }
+
+  function renderTabs(){
+    els.tabs.innerHTML = "";
+    data.sections.forEach(sec => {
+      const btn = document.createElement("button");
+      btn.className = "tab" + (sec.id === state.activeSectionId ? " active" : "");
+      btn.innerHTML = `${sec.title} <span class="badge">${sec.items?.length ?? 0}</span>`;
+      btn.addEventListener("click", () => { state.activeSectionId = sec.id; state.search = ""; els.searchInput.value = ""; renderTabs(); renderContent(); });
+      els.tabs.appendChild(btn);
+    });
+  }
+
+  function renderContent(){
+    const sec = getActive();
+    const filtered = (sec.items ?? []).filter(item => {
+      if(!state.search.trim()) return true;
+      return JSON.stringify(item).toLowerCase().includes(state.search.trim().toLowerCase());
+    });
+
+    els.content.innerHTML = filtered.map((item, idx) => {
+      const num = idx + 1;
+      const hasOptions = Array.isArray(item.options) && item.options.length;
+      const hasCode    = !!item.code;
+      const hasTextAns = typeof item.answer === "string" && item.answer.trim() !== "";
+      const hasTf      = sec.id === "tf" && hasTextAns;
+      const isOutput   = sec.id === "output";
+      const isError    = sec.id === "error";
+      const isWrite    = sec.id === "write";
+      const catLabel   = item.category ? `${esc(sec.title)} &bull; ${esc(item.category)}` : esc(sec.title);
+      const qClass     = isWrite ? "q write-question" : "q";
+
+      return `
+        <div class="${qClass}">
+          <div class="qHead">
+            <p class="qTitle">${num}) ${esc(item.q)}</p>
+            <span class="qMeta">${catLabel}</span>
+          </div>
+          <div class="qBody">
+            ${hasOptions ? `<ol class="options" type="A">${item.options.map((opt,i) => {
+              const ic = typeof item.correctIndex === "number" && i === item.correctIndex;
+              return `<li class="opt ${ic ? "is-correct" : ""}">${esc(opt)}</li>`;
+            }).join("")}</ol>` : ""}
+            ${hasTf ? `<div class="tf-badge ${item.answer === "True" ? "tf-true" : "tf-false"}">${esc(item.answer)}</div>` : ""}
+            ${isOutput && hasTextAns ? `<div class="output-answer"><div class="label">&#x25BA; Output</div><div>${esc(item.answer)}</div></div>` : ""}
+            ${isError  && hasTextAns ? `<div class="error-answer"><div class="label">&#x26A0; Error &amp; Fix</div><div>${esc(item.answer)}</div></div>` : ""}
+            ${hasCode ? `
+              <div class="${isWrite ? "code-answer-wrap" : "code-question-wrap"}">
+                <div class="code-toolbar">
+                  <div class="code-toolbar-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+                  <span class="code-toolbar-lang">C++</span>
+                  <button class="copy-btn" type="button" data-code="${encodeURIComponent(item.code)}">&#x1F4CB; Copy</button>
+                </div>
+                <pre class="language-cpp"><code class="language-cpp">${esc(item.code)}</code></pre>
+              </div>` : ""}
+          </div>
+        </div>`;
+    }).join("");
+
+    bindCopy();
+    applyAnswers(state.showAnswers);
+    if(window.Prism) setTimeout(() => Prism.highlightAll(), 0);
+  }
+
+  function bindCopy(){
+    document.querySelectorAll(".copy-btn").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const code = decodeURIComponent(btn.dataset.code || "");
+        try { await navigator.clipboard.writeText(code); } catch(e) {
+          const ta = document.createElement("textarea"); ta.value = code;
+          document.body.appendChild(ta); ta.select(); document.execCommand("copy"); document.body.removeChild(ta);
+        }
+        const old = btn.innerHTML;
+        btn.innerHTML = "&#x2705; Copied"; btn.classList.add("copied");
+        setTimeout(() => { btn.innerHTML = old; btn.classList.remove("copied"); }, 1400);
+      });
+    });
+  }
+
+  els.searchInput.addEventListener("input", e => { state.search = e.target.value; renderContent(); });
+  els.btnPrint.addEventListener("click", () => window.print());
+  els.answersSwitch.addEventListener("click", () => applyAnswers(!state.showAnswers));
+  els.themeSwitch.addEventListener("click", () => applyTheme(state.theme === "dark" ? "light" : "dark"));
+
+  (function init(){
+    renderTabs(); renderContent();
+    const saved = localStorage.getItem("sheet_theme");
+    if(saved === "dark" || saved === "light") applyTheme(saved);
+    else applyTheme(window.matchMedia?.("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    applyAnswers(localStorage.getItem("sheet_answers") === "1");
+  })();
+  </script>
+</body>
+</html>
